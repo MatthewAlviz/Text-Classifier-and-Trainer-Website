@@ -1,5 +1,5 @@
 #import library
-import fastText
+from fastText import train_supervised
 import pandas as pd
 import re
 from nltk.corpus import stopwords
@@ -7,7 +7,7 @@ from io import StringIO
 import csv
 
 #pre-process data
-dataset = pd.read_csv('/home/osboxes/Desktop/ML PROJECT/Machine Learning Algorithms/FastText Algorithm/ML PROJECT.csv')
+dataset = pd.read_csv('/home/osboxes/Desktop/ACCENTURE PROJECT/Machine Learning Algorithms/FastText Algorithm/ML PROJECT.csv')
 col = ['Knowledge Base', 'Short Description']
 test1 = dataset[col]
 
@@ -29,4 +29,8 @@ def clean_text(text):
 
 test1['Short Description'] = test1['Short Description'].apply(clean_text)
 
-test1.to_csv('/home/osboxes/Desktop/ML PROJECT/Machine Learning Algorithms/FastText Algorithm/preprocessed.txt', index=False, sep=' ', header=False, escapechar=" ", quoting=csv.QUOTE_NONE)
+test1.to_csv('/home/osboxes/Desktop/ACCENTURE PROJECT/Machine Learning Algorithms/FastText Algorithm/preprocessed.txt', index=False, sep=' ', header=False, escapechar=" ", quoting=csv.QUOTE_NONE)
+
+model = train_supervised(input='/home/osboxes/Desktop/ACCENTURE PROJECT/Machine Learning Algorithms/FastText Algorithm/preprocessed.txt')
+
+model.save_model("/home/osboxes/Desktop/ACCENTURE PROJECT/Machine Learning Algorithms/FastText Algorithm/TestModel.bin")
