@@ -1,0 +1,275 @@
+__label__KB_1 add  ssearm  termporary  approver
+__label__KB_1 additional  sap  access
+__label__KB_1 grcp3  users  zsap_all_without_hr_iberia
+__label__KB_1 additional  sap  access
+__label__KB_1 grc  usuario  areex001  caducado
+__label__KB_1 zupdbwdata  auth  access
+__label__KB_1 leaver  sml022806  sonia  romero
+__label__KB_1 grcp2  user  locked
+__label__KB_1 access  request  dc1
+__label__KB_1 acess  iwbep  error_log  code  pe1  users  garri001  llanx001
+__label__KB_1 cierx001  dont  office  365  account
+__label__KB_1 sml022494  starter  guillermo  urroz  torres
+__label__KB_1 authorization  fo  runing  cost  ee1  non  production
+__label__KB_1 extend  end  date  sap  user  pe1  ecc  ps1  ewm
+__label__KB_1 access  sap
+__label__KB_1 deja  entrar  al  sap
+__label__KB_1 extend  validity  date  sap  account
+__label__KB_1 sml020434  extend  sap  account  date
+__label__KB_1 sml021523  create  sap  account  mormx030
+__label__KB_1 create  sap  user  andrea  folgado
+__label__KB_1 sap  access
+__label__KB_1 remove  user  sap  account
+__label__KB_1 access  sap  fiori  mobile  app
+__label__KB_1 sml022519  extend  validity  account  ecc  user  andix001
+__label__KB_1 issue  using  transaction  me51n
+__label__KB_1 sml020434  en  principio  deja  entrar  mi  cuenta  al  parecer  mi  cuenta  caduc  este  fin  de  semana  sin  mi  cuenta  puedo  trabajar
+__label__KB_1 disable  sap  user  systems  mormx030
+__label__KB_1 grant  access  fiori  mobile  app  eoin  byrn
+__label__KB_1 accces  transaccion  okov
+__label__KB_1 sap  access  qp01  qp02  creation  inspection  plans  raw  materials  finished  packaging  materials
+__label__KB_1 fw  incident  inc0183256  priority  3  moderate  comments  added
+__label__KB_1 acces  qe3  uat  inc0207139
+__label__KB_1 create  users  test  qs3  ewm  without  sso  rf  devices
+__label__KB_1 user  jose  moreno  extend  valid  account  ad  sap
+__label__KB_1 delete  sap  accounts  user  etorjx004
+__label__KB_1 sml021499  sap  access  marta  ruiz
+__label__KB_1 acceso  de3  ds3
+__label__KB_1 sml016806  delete  account  sap
+__label__KB_1 necesito  permisos  para  ferran  de  la  pantalla  que  adjuntamos
+__label__KB_1 transaction  roles  tomasz  gadzalski  gadtx001
+__label__KB_1 puedo  entrar  en  qe1
+__label__KB_1 delete  following  sap  accounts
+__label__KB_1 sin  autorizacion  la  transaccion  va01  de  sap
+__label__KB_1 cant  attach  files  sap  userid
+__label__KB_1 me51n  access  create  transfer  stock  request  carcaixent  attached  su53
+__label__KB_1 kocax001  wasnt  granted  access  sap  pe1
+__label__KB_1 dont  acces  sap  user  blocked
+__label__KB_1 sml020434  ad  manuela  franco  ampliar  validez  cuenta  ad  segn  peticion  sml
+__label__KB_1 access  transaction  yfifa_imr1
+__label__KB_1 authorisation  user  rubjx002  transaction  v23  check  well  vkm3
+__label__KB_1 commercial  flash  sap
+__label__KB_1 sml022185  please  approve  starter  nicolas  verrier
+__label__KB_1 sap  user  accounts  longer  valid  could  please  active  thanks
+__label__KB_1 catt  end  august  2017  sbfe
+__label__KB_1 sml018866  starter  thierry  deliere
+__label__KB_1 sml021492  moverines  unceta
+__label__KB_1 uc4cpic  user  id  access  post  es04
+__label__KB_1 sap  account  problem
+__label__KB_1 removing  access  sbfe  user  suslm001  lavinia  maria  sisu  transaction  f110  payment  run  nl02
+__label__KB_1 ee1  system  set  account  user  ebaljr001
+__label__KB_1 reactivate  sap  account  rufmx001
+__label__KB_1 sap  access
+__label__KB_1 firefighter  ff_it_mdbu  l  echeandia
+__label__KB_1 releasing  order  work  carole  falleguerho
+__label__KB_1 training  qe1  therefore  need  access  practice
+__label__KB_1 autorisation  folder  sale  customer  service
+__label__KB_1 access  required  sap  plant  4120
+__label__KB_1 pe1  approver  role  set  user  wodx001
+__label__KB_1 sml  018645  sap  approver  profile  herjx002
+__label__KB_1 request  access  sap  bi
+__label__KB_1 sml019230  please  approve  mover  philippe  le  saint
+__label__KB_1 remove  req  app  access
+__label__KB_1 sml017361  emilie  magdelaine
+__label__KB_1 sml018437  please  approve  mover  anthony  clauin
+__label__KB_1 kehc  access  required
+__label__KB_1 access  stms_qa
+__label__KB_1 sml017927  emilie  terrasse
+__label__KB_1 accs  ee1
+__label__KB_1 qe1  create  account  user  ordsx001
+__label__KB_1 sap  access
+__label__KB_1 mir4  active  alert  holders
+__label__KB_1 bi  access  marc  prieto
+__label__KB_1 sml019250  please  approve  mover  robert  wilkins
+__label__KB_1 account  sap  christophe  meloni  desactivated
+__label__KB_1 ff  extension  hugo  linares
+__label__KB_1 info  call  ex2_200  job  aborted  job  ssepe1fo_ecc_itf_loc_sse_voxel_edi_out  0672597591  blocked  sap_ora_pe1  workflow  jobp  ssep_voxel_to_sap  2
+__label__KB_1 sml023845  please  approve  starter  stephane  picot
+__label__KB_1 change  sap  account  end  date
+__label__KB_1 sap  delegation
+__label__KB_1 1profil  metier  lcn  logistiques  dpots  lcn  lo  logistic  operator  extrieur  lcn  et  lagny
+__label__KB_1 sml023250  please  approve  mover  hassen  khalfi
+__label__KB_1 bw  rouverture  compte  jdebray
+__label__KB_1 pe1  pb1  ps1  pc1  clean
+__label__KB_1 lisa  furness  approver
+__label__KB_1 sml022374  please  approve  mover  ophlie  rocherieux
+__label__KB_1 grcp3  user  unlock  pb1  peimx001
+__label__KB_1 user  id  buzgx002
+__label__KB_1 login  name  sap
+__label__KB_1 access  sap  transaction  ymapchanges
+__label__KB_2 please  give  acces  qe3  sap  thanks
+__label__KB_2 se38  permission  executing  program  sdrqcr21
+__label__KB_2 sml018811  please  approve  starter  nikola  szplitt
+__label__KB_2 need  access  spe  ol19  sand  box  se1
+__label__KB_2 user  ee1
+__label__KB_2 missing  access  v23  unable  release  billing  documents
+__label__KB_2 resetting  password  user  srfc_mdm_sh  qe1  600
+__label__KB_2 sml018867  update  sap  access
+__label__KB_2 sml023495  leaver  marek  golabek  sap  bo  account  management
+__label__KB_2 sml021314  sap  access
+__label__KB_2 restore  sap  pe1  access
+__label__KB_2 sml015487
+__label__KB_2 copy  functions  old  account  evantx003  vantx003
+__label__KB_2 reset  pwd  esotjx003  pe1ps1pb1smp
+__label__KB_2 update  sil  users  062  psiscm  per  attached  document
+__label__KB_2 tobymckeever  sbfe  release  strategy  rights
+__label__KB_2 access  ml81n
+__label__KB_2 sml022991  request  access  sap  qe3  account  lossx001
+__label__KB_2 grc  p3  authorization  post  invoice  ee1
+__label__KB_2 sap  access  mr11  fire  fighter  access
+__label__KB_2 sml023012  sap  account  creation  paglx002
+__label__KB_2 sap  access
+__label__KB_2 access  de3  qe3
+__label__KB_2 risk  level  critical  37  risks  catorized
+__label__KB_2 mr21  access  needed
+__label__KB_2 sap  access  request_yapinvcontrol
+__label__KB_2 issues  access  database  bo  analysis
+__label__KB_2 sml020348  please  approve  starter  mathias  mimouna
+__label__KB_2 user  srfc_mdm_sh  qe1  600  rfc  authorization  function  module  bods  rfc_read_table
+__label__KB_2 access  qe3  garjx011  qe1
+__label__KB_2 ksh3
+__label__KB_2 access  dhaax001  bi  eb1
+__label__KB_2 sml019450  please  approve  request  application  access  akira  nojima
+__label__KB_2 grc  pe1  extend  account  valid  date  accounts
+__label__KB_2 sap  transaction  zfi_ed_materials
+__label__KB_2 cant  log  sap
+__label__KB_2 sml021068  please  approve  mover  helene  ulliel
+__label__KB_2 sml022718  sap  account  extension  yasrx001
+__label__KB_2 firefighter  access  ke  user  emaccx003
+__label__KB_2 add  yit_idoc_report  lrs_p053
+__label__KB_2 update  users  063  pb1bw  attached  document
+__label__KB_2 sml023932  mover  david  blake
+__label__KB_2 access  pc1
+__label__KB_2 access  me11  me01  me3m  sil  customer  operations  team
+__label__KB_2 create  fuji  users  sapphire  dev  de3  system
+__label__KB_2 sap  access
+__label__KB_2 sml024310  please  approve  starter  jose  barbosa
+__label__KB_2 sml021380  please  approve  starter  etienne  capelli
+__label__KB_2 change  controller  ff_vkm1_nl02  herman  buist
+__label__KB_2 user  locked  de3  600
+__label__KB_2 fire  fighter  access  ygrc_ff  eam  launchpad  logon
+__label__KB_2 sml022725  sap  account  creation  dordx001
+__label__KB_2 grc  change  ys  goods  movements
+__label__KB_2 wrong  endd  date
+__label__KB_2 sap  access
+__label__KB_2 ps1  extend  valida  date  account  user  catcx001
+__label__KB_2 sap  account  extension  genesis  abigail  cevgx001
+__label__KB_2 access  anymore  pe1  connexion  saplogon  windows  ebouvx001
+__label__KB_2 sap  bi  access
+__label__KB_2 reactivate  sap  account  gonax004
+__label__KB_2 check  sap  access
+__label__KB_2 qe3  access
+__label__KB_2 access  qe3  system  user  garri001
+__label__KB_2 sml024024  lrs  access  sap
+__label__KB_2 provide  access  de3  qe3  qs3  lbpo  users
+__label__KB_2 sap  access
+__label__KB_2 roles  liam  angel
+__label__KB_2 access  ds3  100  600  benrx001
+__label__KB_2 ospl  sap  requestor  profile  drosx003  sml018255
+__label__KB_2 access  grc  cyrille  briere
+__label__KB_2 peter  harding  reactivate
+__label__KB_2 sml017596  cancaya  yucel
+__label__KB_2 abel  complete  tasks  sap  transaction  code  mi20
+__label__KB_2 sml020475  please  approve  starter  marnie  scott
+__label__KB_2 sml022113  request  application  access  pierreantoine  waxin
+__label__KB_2 sml023622  please  approve  mover  fleurine  moreau
+__label__KB_2 provide  sap  approval  access  leena  adhia
+__label__KB_2 sml024194  de3  ds3  access  marta  torres
+__label__KB_2 sml023494  leaver  agnieszka  miller
+__label__KB_2 access  query  user  group  ng_scm  generate  inventory  via  mb52_alt  stock  alternative  unit
+__label__KB_2 grc  p4  user  valsx007  marrx037  blocked  ecc  ewm
+__label__KB_2 garjx011  access  qe1  system
+__label__KB_2 sap  pe1  access  new  user  eschnx003
+__label__KB_2 posting  customer  vendor
+__label__KB_2 bi  report  quality  environment
+__label__KB_2 sml017597  reactivate  ecolcx014  account
+__label__KB_2 end  date  modification
+__label__KB_2 reactivate  sap  account
+__label__KB_2 sml013555  leaver  nastasia  roulet
+__label__KB_2 sml015461  please  approve  mover  nicolas  mercier
+__label__KB_2 sap  account  extension  escgx001
+__label__KB_2 new  bw  pb1  profile  request  sil  sales  report  access
+__label__KB_2 mot  de  passe  sap
+__label__KB_2 ps1  access  user  rubjx002  sml018607
+__label__KB_2 regional  profiles
+__label__KB_2 sml016574  mover  rachid  benbagdad
+__label__KB_2 sml017220  please  approve  leaver  maliss  gaschet
+__label__KB_2 sml021564  access  transaction  sap  monika  kaczyska
+__label__KB_2 sml023414  sap  access
+__label__KB_3 reset  password  xcislx001
+__label__KB_3 sml019326  reopen  naoko  terakawa  sap  accnt
+__label__KB_3 access  transaction  yit_idoc_report
+__label__KB_3 reset  pass  fd1  user  hugjx004
+__label__KB_3 update  data  pg1  sap  users  osisil  per  attached  document
+__label__KB_3 sml016559  starter  charlene  bonnet
+__label__KB_3 reactivate  sap  account  evirex001
+__label__KB_3 unable  access  me54n  sap  release  pr  come  budget  owner  get  email  link  release  says  authoristation
+__label__KB_3 sml023668  please  approve  starter  nathalie  verdier
+__label__KB_3 yk_io_upload  unable  load
+__label__KB_3 copy  user  pb1  qb3
+__label__KB_3 problme  connexion  sap
+__label__KB_3 please  access  me12  filling  tax  code  default  material  number  per  vendor
+__label__KB_3 sml016575  mover  anthony  clauin
+__label__KB_3 ecounx001  needs  bi  access
+__label__KB_3 sap  access
+__label__KB_3 access  qe3
+__label__KB_3 sml018854  please  approve  mover  aurelien  marchand
+__label__KB_3 sml016647  starter  andrew  aly  c  obrique
+__label__KB_3 resto  password  ecamjx009
+__label__KB_3 sml016299  please  approve  starter  le  saint  philippe
+__label__KB_3 ewm  inventory  create  account  ewm  fi  team  cit
+__label__KB_3 urgent  add  ke4smm  ke4sfi  ff  id
+__label__KB_3 bi  test  environment  access
+__label__KB_3 sap  wrong  name  purchase  order  pdf
+__label__KB_3 duplicate  account  sap  remove  sebnx002
+__label__KB_3 fw  incident  inc0211410  priority  3  moderate  comments  added
+__label__KB_3 ff  john  langan
+__label__KB_3 user  id  sbfe  active  alert
+__label__KB_3 user  jlangan  se1  account  locked
+__label__KB_3 sap  permite  crear  pedidos  de  capex  falta  autorizacin
+__label__KB_3 sml016693
+__label__KB_3 active  alert  accesses
+__label__KB_3 sap  profiles  85200
+__label__KB_3 mayank  khandelwal
+__label__KB_3 sousdossiers  manquants
+__label__KB_3 sml023857  please  approve  mover  elliott  poncet
+__label__KB_3 missing  authorization_me22n
+__label__KB_3 sap  access
+__label__KB_3 sap  tcode  sm37  authorization  request  select  spool
+__label__KB_3 sap  storage  location  administrative  control
+__label__KB_3 user  creation  pe1  ps1
+__label__KB_3 new  role  pe1  stms
+__label__KB_3 sap
+__label__KB_3 sml017649  solenn  drouin
+__label__KB_3 ygrc_ff  eam  access
+__label__KB_3 bi  account  creation  sml019664
+__label__KB_3 sml020070  please  approve  mover  ryan  david  hughes
+__label__KB_3 sap  account  end  date
+__label__KB_3 review  display  roles  vf04  activity  01  02
+__label__KB_3 sap  bo  analysis
+__label__KB_3 bi  report  check  pricing  list  per  customer
+__label__KB_3 sml020697  sap  access  request  ricsx002
+__label__KB_3 access  quality  environment
+__label__KB_3 sml024116  mover  patrice  martin
+__label__KB_3 manage  group  users  linked  zobs  mailing  notification
+__label__KB_3 update  composite  roles  bi  bw
+__label__KB_3 sml021777  please  approve  starter  sandra  bourhis
+__label__KB_3 usgrp  description
+__label__KB_3 sml020269  please  approve  starter  jimmylee  gilles
+__label__KB_3 remove  access  me31k  me32k
+__label__KB_3 sml021424  sap  account  management  leaver  xavier  rebout
+__label__KB_3 grant  sap  access  mischa  vincenten
+__label__KB_3 sml021822  please  approve  starter  florent  baudart
+__label__KB_3 dasha  eibenova  access  pe1  unblock
+__label__KB_3 create  fuji  users  sapphire  qua  systems  qe3  qs3  qb3  qc1
+__label__KB_3 kkao  funciona  correcamente  con  mi  usuario
+__label__KB_3 pe1  unblock  password  reset  tomdx001
+__label__KB_3 sap  logon  balancing  error  88
+__label__KB_3 nif6  combination  maintained
+__label__KB_3 de3  ds3  active  accounts  garjx011  sabsx003
+__label__KB_3 sml015421  equipe  grc  cration  dun  compte  bw
+__label__KB_3 grant  access  stms_qa  ana  garcia
+__label__KB_3 sml023648  please  approve  mover  maltaverne  marie
+__label__KB_3 change  controller  ffct_fi01_2
+__label__KB_3 uupdate  data  ecc6  sap  users  osisil  per  attached  document
+__label__KB_3 sap  account  disabled  popmx001
