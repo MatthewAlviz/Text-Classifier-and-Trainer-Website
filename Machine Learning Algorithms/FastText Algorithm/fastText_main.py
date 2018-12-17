@@ -10,8 +10,6 @@ import csv
 dataset = pd.read_csv('/home/osboxes/Desktop/ACCENTURE PROJECT/Machine Learning Algorithms/FastText Algorithm/ML PROJECT.csv')
 col = ['Knowledge Base', 'Short Description']
 test1 = dataset[col]
-
-#Store data to csv file
 test1['Knowledge Base']=['__label__'+s.replace(' or ', '$').replace(', or ','$').replace(',','$').replace(' ','_').replace(',','__label__').replace('$$','$').replace('$',' __label__').replace('___','__') for s in test1['Knowledge Base']]
 test1['Knowledge Base']
 test1['Short Description']= test1['Short Description'].replace('\n',' ', regex=True).replace('\t',' ', regex=True)
@@ -29,8 +27,9 @@ def clean_text(text):
 
 test1['Short Description'] = test1['Short Description'].apply(clean_text)
 
+#Store data to csv file
 test1.to_csv('/home/osboxes/Desktop/ACCENTURE PROJECT/Machine Learning Algorithms/FastText Algorithm/preprocessed.txt', index=False, sep=' ', header=False, escapechar=" ", quoting=csv.QUOTE_NONE)
 
+#Train the model
 model = train_supervised(input='/home/osboxes/Desktop/ACCENTURE PROJECT/Machine Learning Algorithms/FastText Algorithm/preprocessed.txt')
-
 model.save_model("/home/osboxes/Desktop/ACCENTURE PROJECT/Machine Learning Algorithms/FastText Algorithm/TestModel.bin")
