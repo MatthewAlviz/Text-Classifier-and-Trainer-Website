@@ -9,6 +9,7 @@
      <!-- Static CSS -->
      <link rel="stylesheet" href="https://cdn.materialdesignicons.com/1.1.34/css/materialdesignicons.min.css">
      <link rel="stylesheet" href="{% static 'css/forMobileDevice.css'%}">
+     <link rel="stylesheet" href="{% static 'css/loading.css'%}">
 
      <!-- Bootstrap CSS -->
      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -16,6 +17,7 @@
 
   </head>
   <body>
+
     <div id="mobile" style="min-height:100%; min-height:100vh; align-items:center; background-color:#007bff">
         <div class="container" id="mobile1" style="background-color:#007bff">
             <!-- For Mobile -->
@@ -29,6 +31,15 @@
             </div>
         </div>
     </div>
+
+
+  <div class="alert alert-success alert-dismissible fade show" id="RegSuccess" role="alert" style="display:none">
+      <h4 class="alert-heading">Thank you for registering!</h4>
+      <p>We will be reviewing your account for verification purposes. Please check your email for notifications. The account will only be activated once we've verified your account.</p>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
 
     <!-- Above spaces -->
     <div id="extra" style="width:100vw; height:5vh; color:transparent; background-color:transparent">SPACE</div>
@@ -114,6 +125,12 @@
 
     <!-- Modal -->
     <div id="register" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="alert alert-danger" role="alert" id="RegError1" style="display:none">
+      Error: <span class="alert-link">Invalid Email</span>. Please enter a valid existing email.
+    </div>
+    <div class="alert alert-danger" role="alert" id="RegError2" style="display:none">
+      Error: <span class="alert-link">Invalid Password</span>. Please follow the guidelines for the password inside the tooltip.
+    </div>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -121,6 +138,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
+                <div class="loader" id="loader-1A" style="display:none"></div>
                 <form class="form" role="form" autocomplete="off" id="formLogin" novalidate="" method="POST" action="/register/">
                     {% csrf_token %}
                     <div class="form-group">
@@ -150,7 +168,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
-                <form class="form" role="form" autocomplete="off" id="formLogin" novalidate="" method="POST">
+                <form class="form" role="form" autocomplete="off" id="formLogin2" novalidate="" method="POST">
                     {% csrf_token %}
                     <div class="form-group">
                         <a href=" " class="float-right">Forgot password?</a>
@@ -230,6 +248,8 @@
     <script>
         $(document).on('submit', '#formLogin', function(e){
             e.preventDefault();
+            $('#loader-1A').removeAttr('style')
+            $('#formLogin').attr("style", "display:none")
             $.ajax({
                 type:'POST',
                 url: '/register/',
@@ -239,7 +259,18 @@
                     csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
                 },
                 success: function(data){
-                    console.log(data.status)
+                    $('#formLogin').removeAttr('style')
+                    $('#loader-1A').attr("style", "display:none")
+                    $('.alert').attr("style", "display:none")
+                    if (data.status == 'email not exist'){
+                        $('#RegError1').removeAttr('style')
+                    }else if(data.status == 'invalid password'){
+                        $('#RegError2').removeAttr('style')
+                    }else{
+                        //success
+                        $('#register').modal('toggle')
+                        $('#RegSuccess').removeAttr('style')
+                    }
                 }
             });
         });

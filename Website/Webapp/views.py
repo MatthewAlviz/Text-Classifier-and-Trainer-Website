@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 import re
 from .models import UserInfo
+import requests
 
 #Home Page
 def base(request):
@@ -70,16 +71,33 @@ def validateRegForm(request):
         if flag == 0:
             # pass success
             #verify email legitimacy
-            result = sendConfirmationUser(emailReg)
+            response = requests.get('https://api.trumail.io/v2/lookups/json?email=' + emailReg)
+            emailVerifier = response.json()
 
-            if result == 0:
+            try:
+                emailVerifierMessage = emailVerifier['Message']
+            except Exception as e:
+                emailVerifierMessage = "none"
+
+            try:
+                emailVerifierDel = emailVerifier['deliverable']
+            except Exception as e:
+                emailVerifierDel = False
+                
+            if emailVerifierMessage == 'No response received from mail server':
+                data={
+                'status': "email not exist"
+                }
+
+            elif emailVerifierDel == True:
                 #legit email
+                result = sendConfirmationUser(emailReg)
                 data={
                 'status': 'success'
                 }
+
                 #send confirmation to admin
                 sendConfirmationAdmin(emailReg)
-
             else:
                 #email non-existent
                 data={
