@@ -207,4 +207,8 @@ def confirmAccount(request):
         #404 Not Found
         result = 'Webapp/404NotFound.html'
 
+    #delete registration queue
+    deleteThis = RegistrationQueue.objects.filter(email=userEmail)
+    deleteThis.delete()
+
     return render(request, result)
