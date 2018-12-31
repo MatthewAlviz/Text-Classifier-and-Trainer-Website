@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import UserInfo, TrainedModels
+from .models import UserInfo, TrainedModels, RegistrationQueue 
 
 # Register your models here.
 admin.site.register(UserInfo)
 admin.site.register(TrainedModels)
+admin.site.register(RegistrationQueue)
