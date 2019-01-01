@@ -15,20 +15,36 @@ from django.views.decorators.csrf import csrf_exempt
 
 #Home Page
 def base(request):
-    return render(request, 'Webapp/base.html')
+    if 'email' in request.COOKIES:
+        value = request.COOKIES['email']
+        if value != 'NaN':
+            request.session['userEmail'] = value
+
+    if request.session.has_key('userEmail'):
+
+        try:
+            remember = request.GET['keep']
+        except:
+            remember = "false"
+
+        username = request.session['userEmail']
+
+        return render(request, 'Webapp/loggedIn.html', {"username": username, "remember": remember})
+    else:
+        return render(request, 'Webapp/base.html')
 
 #Log-in Validator
 def logIn(request):
     if request.method == 'POST':
-        emailIn = request.POST['emailIn']
-        passwordIn = request.POST['passwordIn']
+        emailIn = request.POST['emailLog']
+        passwordIn = request.POST['passwordLog']
 
         if UserInfo.objects.filter(email=emailIn).exists() and UserInfo.objects.filter(password=passwordIn).exists():
+
+            request.session['userEmail'] = emailIn
             data = {
             'status' : 'success'
             }
-
-            request.session['userEmail'] = emailIn
         else:
             data = {
             'status' : 'invalid credential'
@@ -40,15 +56,48 @@ def logIn(request):
 
     return JsonResponse(data)
 
+#Forgot password
+def forgotPass(request):
+    if request.method == 'POST':
+        reqUser = request.POST['emailForgot']
+        if UserInfo.objects.filter(email=reqUser).exists():
+            #Email to user change password
+            data = {
+            'status' : 'success'
+            }
+        else:
+            data = {
+            'status' : 'invalid credential'
+            }
+
+        return JsonResponse(data)
+
+#Change password
+#def changePass(request):
+
+
+@csrf_exempt
+#Keep Me Logged In
+def keepLoggedIn(request):
+    if request.method == 'POST':
+        remember = request.POST['keepLogged']
+        myUserEmail = request.POST['myUserEmail']
+
+        if remember == 'true':
+            #Save to cookies
+            response = HttpResponse("hello")
+            response.set_cookie('email', myUserEmail)
+
+            return response
+
+@csrf_exempt
 #Log-out
 def logOut(request):
     del request.session['userEmail']
+    response = HttpResponse("hello")
+    response.set_cookie('email', 'NaN')
 
-    data = {
-        'status': 'success'
-    }
-
-    return JsonResponse(data)
+    return response
 
 #Registration Validator
 def validateRegForm(request):
@@ -82,7 +131,7 @@ def validateRegForm(request):
 
             if flag == 0:
                 # pass success
-                #verify email legitimacy
+                #verify email legitimacy (COMING SOON!)
                 """
                 response = requests.get('https://api.trumail.io/v2/lookups/json?email=' + emailReg)
                 emailVerifier = response.json()
