@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+         <link rel="stylesheet" href="{% static 'css/loading.css'%}">
+    </head>
+    <body>
+
+        <div id="register" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="alert alert-danger" role="alert" id="RegError2" style="display:none">
+          Error: <span class="alert-link">Invalid Password</span>. Please follow the guidelines for the password inside the tooltip.
+        </div>
+        <div class="alert alert-danger" role="alert" id="RegError3" style="display:none">
+          Error: <span class="alert-link">Request Expired</span>. The requested password change have already been expired. Please request another one.
+        </div>
+        <div class="alert alert-success alert-dismissible fade show" id="RegSuccess" role="alert" style="display:none">
+            <h4 class="alert-heading">Password Change Success!</h4>
+        </div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Change Password</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="loader" id="loader-1A" style="display:none"></div>
+                    <form class="form" role="form" autocomplete="off" id="formLogin" novalidate="" method="POST" action="/verifyPass/">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="uname2">Email</label>
+                            <input type="email" class="form-control form-control-lg" readonly class="form-control-plaintext" id="staticEmail" value="{{username}}" name="uname2" id="uname2" required="">
+                            <input type="hidden" id="uname" name="uname" value="{{username}}">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input  data-toggle="tooltip" data-placement="right" title="Enter at least 8 characters with a big and small character, a number and a special character (without spaces)" type="password" class="form-control form-control-lg" id="pwd2" required="" autocomplete="new-password">
+                            <div class="invalid-feedback">Enter your password too!</div>
+                        </div>
+                        <div class="form-group py-4">
+                            <input type="hidden" name="asdf" value="">
+                            <button type="submit" class="btn btn-primary btn-lg float-right" id="btnLogin">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script>
+        $(window).on('load',function(){
+            $('[data-toggle="tooltip"]').tooltip()
+            $('#register').modal('show');
+        });
+        </script>
+        <script>
+        $(document).on('submit', '#formLogin', function(e){
+            e.preventDefault();
+            console.log($('#uname').val())
+            searchParams = new URLSearchParams(window.location.search)
+            var param = searchParams.get('id')
+            $('#loader-1A').removeAttr('style')
+            $('#formLogin').attr("style", "display:none")
+            $.ajax({
+                type:'POST',
+                url: '/verifyPass/',
+                data:{
+                    id: param,
+                    changeMe: $('#uname').val(),
+                    passwordChange: $('#pwd2').val(),
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function(data){
+                    $('#formLogin').removeAttr('style')
+                    $('#loader-1A').attr("style", "display:none")
+                    $('.alert').attr("style", "display:none")
+                    if (data.status == 'invalid'){
+                        $('#RegError2').removeAttr('style')
+                    if (data.status == 'expired'){
+                        $('#RegError3').removeAttr('style')
+                    }else{
+                        //success
+                        $('#RegSuccess').removeAttr('style')
+                    }
+                }
+            });
+        });
+        </script>
+    </body>
+</html>

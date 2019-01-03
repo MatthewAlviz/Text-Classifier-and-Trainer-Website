@@ -7,14 +7,19 @@ from django.core.mail import send_mail
 import re
 from .models import UserInfo
 from .models import RegistrationQueue
+from .models import ChangePassQueue
+from .models import TrainedModels
 import requests
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
+import uuid
 
+homeURL = 'http://0.0.0.0:8000/'
 
 #Home Page
 def base(request):
+
     if 'email' in request.COOKIES:
         value = request.COOKIES['email']
         if value != 'NaN':
@@ -29,7 +34,13 @@ def base(request):
 
         username = request.session['userEmail']
 
-        return render(request, 'Webapp/loggedIn.html', {"username": username, "remember": remember})
+        if TrainedModels.objects.filter(email=username).exists():
+            query = TrainedModels.objects.filter(email=username)
+            count = query.count()
+
+            return render(request, 'Webapp/loggedInWithModels.html', {"username": username, "remember": remember, "numOfModels": count, "models": query})
+        else:
+            return render(request, 'Webapp/loggedIn.html', {"username": username, "remember": remember})
     else:
         return render(request, 'Webapp/base.html')
 
@@ -61,10 +72,37 @@ def forgotPass(request):
     if request.method == 'POST':
         reqUser = request.POST['emailForgot']
         if UserInfo.objects.filter(email=reqUser).exists():
-            #Email to user change password
-            data = {
-            'status' : 'success'
-            }
+            #Add to Queue
+            if ChangePassQueue.objects.filter(email=reqUser).exists():
+                query = ChangePassQueue.objects.filter(email=reqUser)
+                count = query[0].reqCount
+                count += 1
+
+                if count <= 5:
+                    #Email to user change password
+                    id = query[0].ticketNo
+                    sendForgotPassToUser(reqUser, id)
+
+                    data = {
+                    'status' : 'success'
+                    }
+
+                else:
+                    #Exceeded change pass limit
+                    data = {
+                    'status' : 'limit exceeded'
+                    }
+            else:
+                id = uuid.uuid4().hex
+                query = UserInfo.objects.get(email=reqUser)
+                ChangePassQueue.objects.create(ticketNo=id,email=query,reqCount=1)
+
+                #Email to user change password
+                sendForgotPassToUser(reqUser, id)
+
+                data = {
+                'status' : 'success'
+                }
         else:
             data = {
             'status' : 'invalid credential'
@@ -72,9 +110,75 @@ def forgotPass(request):
 
         return JsonResponse(data)
 
-#Change password
-#def changePass(request):
+#Send Forgot Pass Email
+def sendForgotPassToUser(email, id):
+    subject = 'Text Trainer and Classifier Tool Notification'
+    message = 'Click the link below to change your password:\n ' + homeURL + 'changePass/?id=' + id
+    from_email = settings.EMAIL_HOST_USER
+    send_to = [email]
 
+    send_mail(subject, message, from_email, send_to, fail_silently=False)
+
+#Change password page
+def changePass(request):
+    try:
+        id = request.GET['id']
+        if ChangePassQueue.objects.filter(ticketNo=id).exists():
+            query = ChangePassQueue.objects.get(ticketNo=id)
+            username = query.email.email
+            return render(request, 'Webapp/changePass.html', {"username": username})
+        else:
+            return render(request, 'Webapp/404NotFound.html')
+
+    except:
+        return render(request, 'Webapp/404NotFound.html')
+
+#Verify change password
+def verifyPass(request):
+    if request.method == 'POST':
+        if ChangePassQueue.objects.filter(ticketNo=id).exists():
+
+            id = request.POST['id']
+            email = request.POST['changeMe']
+            newPass = request.POST['passwordChange']
+
+            flag = 0
+
+            if (len(newPass)<8):
+                flag = -1
+            elif not re.search("[a-z]", newPass):
+                flag = -1
+            elif not re.search("[A-Z]", newPass):
+                flag = -1
+            elif not re.search("[0-9]", newPass):
+                flag = -1
+            elif not re.search("[_@$]", newPass):
+                flag = -1
+            elif re.search("\s", newPass):
+                flag = -1
+            else:
+                flag = 0
+
+            if flag == 0:
+                #delete Queue
+                ChangePassQueue.objects.filter(ticketNo=id).delete()
+
+                #update User Info
+                UserInfo.objects.filter(email=email).update(password=newPass)
+
+                data={
+                'status' : 'success'
+                }
+
+            else:
+                data={
+                'status' : 'invalid'
+                }
+        else:
+            data={
+            'status' : 'expired'
+            }
+    return JsonResponse(data)
 
 @csrf_exempt
 #Keep Me Logged In
@@ -235,22 +339,31 @@ def confirmAccount(request):
         userEmail = request.POST['userMail']
 
         checkPass = settings.SEND_TO
-        print(adminEmail)
-        print(checkPass[0])
-        print(choiceValue)
-        print(userEmail)
 
-        if adminEmail == checkPass[0]:
-            if choiceValue == 'accept':
-                print('Right here')
-                query = RegistrationQueue.objects.filter(email=userEmail)
-                confirmPass = query[0].password
-                UserInfo.objects.create(email=userEmail, password=confirmPass)
+        if RegistrationQueue.objects.filter(email=userEmail).exists():
+            if adminEmail == checkPass[0]:
+                subject = 'Text Trainer and Classifier Tool Notification'
+                from_email = settings.EMAIL_HOST_USER
+                send_to = [userEmail]
 
-                #sucess page
+                if choiceValue == 'accept':
+                    query = RegistrationQueue.objects.filter(email=userEmail)
+                    confirmPass = query[0].password
+                    UserInfo.objects.create(email=userEmail, password=confirmPass)
+
+                    #email accepted to user
+                    message = 'Thank you for signing up. Your account has been verified. \n You may now log in.'
+                else:
+                    #email not accepted to user
+                    message = 'Thank you for signing up. Unfortunately your registration has been declined. \n Please contact the admin if you have any concerns.'
+
+                    #sucess page
+                send_mail(subject, message, from_email, send_to, fail_silently=False)
                 result = 'Webapp/RegSuccess.html'
+            else:
+                #404 Not Found
+                result = 'Webapp/404NotFound.html'
         else:
-            #404 Not Found
             result = 'Webapp/404NotFound.html'
     else:
         #404 Not Found

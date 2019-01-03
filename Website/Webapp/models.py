@@ -18,3 +18,9 @@ class RegistrationQueue(models.Model):
     email = models.EmailField(max_length=250, unique=True)
     password = models.CharField(max_length=20)
     dateCreated = models.DateTimeField(auto_now=True)
+
+class ChangePassQueue(models.Model):
+    ticketNo = models.CharField(max_length=20, unique=True)
+    email = models.ForeignKey('UserInfo', on_delete=models.CASCADE)
+    dateCreated = models.DateTimeField(auto_now=True)
+    reqCount = models.IntegerField()

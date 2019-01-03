@@ -43,7 +43,7 @@
   </div>
 
     <!-- Above spaces -->
-    <div id="extra" style="width:100vw; height:5vh; color:transparent; background-color:transparent">SPACE</div>
+    <div id="extra" style="width:100vw; height:5vh; color:transparent; background-color:transparent; visibility:hidden">SPACE</div>
     <div class="container" id="first" style="position:relative">
         <div class="float-right">
             <div class="dropdown" id="user">
@@ -57,7 +57,7 @@
         </div>
 
         <!-- Above spaces -->
-        <div style="height:10vh; color:transparent">SPACE</div>
+        <div style="height:10vh; color:transparent; visibility:hidden">SPACE</div>
 
         <div class="mx-auto" style="width:700px; font-size:2.5em; text-align:center">Text Trainer and Classifier Tool</div>
         <div class="mx-auto" style="width:600px; font-size:1.3em; text-align:center">Predict/Classify Data by Using Trained Models!</div>
@@ -68,7 +68,7 @@
             <div class="col-12 text-center">
                 <button type="button" id="train" class="btn btn-outline-primary btn-lg">Train a model</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" id="predict" class="btn btn-outline-primary btn-lg active" data-toggle="tooltip" data-placement="top" title="Tip: Train a model or use other's models before predicting data!">Predict data</button>
+                <button type="button" id="predict" class="btn btn-outline-primary btn-lg active" data-toggle="tooltip" data-placement="top" title="Tip: Train a model first before predicting data!">Predict data</button>
             </div>
         </div>
 
@@ -77,22 +77,50 @@
     </div>
 
     <div class="container" id="second">
-        <div style="width:600px; font-size:1.3em;"><b>Recently Trained Models </b><span id="numModels" style="font-size:0.6em; color:#1861b0" data-toggle="tooltip" data-placement="top" title="Tip: You haven't trained any models yet!">Check my models (0)</span></div>
-
+        <div style="width:600px; font-size:1.3em;">Recently Trained Models <span id="numModels" style="font-size:0.6em; color:#1861b0">Check my models ({{ numOfModels }})</span></div>
 
         <!-- Above spaces -->
         <div style="height:10vh; color:transparent; visibility:hidden">SPACE</div>
 
-        <div class="row"><!--Row start (3) -->
-            <div class="mx-auto" text-align:center>
-                You haven't trained any models yet.
-                Would you like to... <br><br><br>
-
-                <button type="button" id="train" class="btn btn-outline-primary btn-lg">Train a model</button>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" id="predict" class="btn btn-outline-primary btn-lg">Check trained models</button>
+        <!--Row start-->
+        <div class="row">
+        {% for model in models%}
+            <div class="col-4">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{model.title}}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">by: {{model.email.email}}</h6>
+                        <p class="card-text">{{model.description}}</p>
+                        <a href="#" class="card-link">Use Model</a>
+                    </div>
+                </div>
             </div>
-        </div> <!-- End of row -->
+            {% if forloop.counter|divisibleby:"3" and forloop.counter0 is not 0%}
+                <!-- Above spaces -->
+                <div style="height:5vh; color:transparent; visibility:hidden">SPACE</div>
+                </div>
+                <!-- End of row -->
+                {% if forloop.last %}
+                {% else %}
+                    <!--Row start-->
+                    <div class="row">
+                {% endif %}
+
+            {% endif %}
+        {% endfor %}
+
+        {% if numOfModels|divisibleby:"3" %}
+        {% else %}
+            </div>
+            <!-- End of row -->
+        {% endif %}
+
+        <!-- Above spaces -->
+        <div style="height:5vh; color:transparent; visibility:hidden">SPACE</div>
+
+        <div class="float-right">
+            <div id="otherModels" style="font-size:0.9em; color:#1861b0">Check other models ></div>
+        </div>
 
         <!-- Above spaces -->
         <div style="height:20vh; color:transparent; visibility:hidden">SPACE</div>

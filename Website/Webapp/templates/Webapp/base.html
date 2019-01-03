@@ -59,9 +59,9 @@
         <div style="height:15vh; color:transparent">SPACE</div>
         <div class="row">
             <div class="col-12 text-center">
-                <button type="button" id="train" class="btn btn-outline-primary btn-lg">Train a model</button>
+                <button type="button" id="train" class="btn btn-outline-primary btn-lg" data-toggle="modal" data-target="#register">Train a model</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" id="predict" class="btn btn-outline-primary btn-lg active" data-toggle="tooltip" data-placement="top" title="Tip: Train a model first before predicting data!">Predict data</button>
+                <button type="button" id="predict" class="btn btn-outline-primary btn-lg active" data-toggle="tooltip" data-placement="top" title="Tip: Train a model first before predicting data!" data-toggle="modal" data-target="#register">Predict data</button>
             </div>
         </div>
 
@@ -69,45 +69,20 @@
         <div style="height:20vh; color:transparent">SPACE</div>
     </div>
     <div class="container" id="second">
-        <div style="width:600px; font-size:1.3em;">Recently Trained Models <span id="numModels" style="font-size:0.6em; color:#1861b0">Check my models (3)</span></div>
+        <div style="width:600px; font-size:1.3em;">Recently Trained Models <span id="numModels" style="font-size:0.6em; color:#1861b0">Check my models (0)</span></div>
 
 
         <!-- Above spaces -->
         <div style="height:10vh; color:transparent">SPACE</div>
 
         <div class="row"><!--Row start (3) -->
-            <div class="col-4">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a>
-                    </div>
-                </div>
+            <div class="mx-auto" text-align:center>
+                You haven't trained any models yet.
+                Would you like to... <br><br><br>
+
+                <button type="button" id="train" class="btn btn-outline-primary btn-lg" data-toggle="modal" data-target="#register">Train a model</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" id="predict" class="btn btn-outline-primary btn-lg">Check trained models</button>
             </div>
         </div> <!-- End of row -->
 
@@ -170,8 +145,11 @@
     <div class="alert alert-danger" role="alert" id="LogInError2" style="display:none">
     Error: <span class="alert-link">Invalid Request</span>.
     </div>
-    <div class="alert alert-warning" role="alert" id="ForgetError1" style="display:none">
+    <div class="alert alert-danger" role="alert" id="ForgetError1" style="display:none">
     Error (Forgot Password): <span class="alert-link">Invalid Email</span>. The email you entered doesn't exist in our database.
+    </div>
+    <div class="alert alert-warning" role="alert" id="ForgetError2" style="display:none">
+    Error (Forgot Password): <span class="alert-link">Limit Exceeded</span>. Please check your email in order to change your password.
     </div>
     <div class="alert alert-success" role="alert" id="ForgetSuccess1" style="display:none">
     Success (Forgot Password): We've sent an email to <span class="alert-link" id="changeToEmail"> User </span>.
@@ -351,12 +329,15 @@
                 success: function(data){
                     $('#formLogin2').removeAttr('style')
                     $('#mainForgot').removeAttr('style')
+                    $('#changeToEmail').html($('#forgotPass').val())
                     $('#loader-1B').attr("style", "display:none")
                     $('.alert').attr("style", "display:none")
                     if (data.status == 'invalid credential'){
                         $('#ForgetError1').removeAttr('style')
                     }else if(data.status == 'success'){
                         $('#ForgetSuccess1').removeAttr('style')
+                    }else if (data.status == 'limit exceeded'){
+                        $('#ForgetError2').removeAttr('style')
                     }
                 }
             });
