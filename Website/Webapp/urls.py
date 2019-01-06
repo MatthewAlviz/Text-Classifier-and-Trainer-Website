@@ -10,5 +10,7 @@ urlpatterns = [
     url(r'^forgotPass/$', views.forgotPass, name='forgotPass'),
     url(r'^keepLogged/$', views.keepLoggedIn, name='keepLoggedIn'),
     url(r'^changePass/$', views.changePass, name='changePass'),
-    url(r'^verifyPass/$', views.verifyPass, name='verifyPass')
+    url(r'^verifyPass/$', views.verifyPass, name='verifyPass'),
+    url(r'^searchModels/$', views.searchModelsPage, name='searchModelsPage'),
+    url(r'^autocomplete/$', views.models_autocomplete, name='models_autocomplete')
 ]

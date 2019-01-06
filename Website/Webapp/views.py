@@ -14,6 +14,8 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 import uuid
+import math
+import json
 
 homeURL = 'http://0.0.0.0:8000/'
 
@@ -374,3 +376,36 @@ def confirmAccount(request):
     deleteThis.delete()
 
     return render(request, result)
+
+def searchModelsPage(request):
+    try:
+        searchID = request.GET['search']
+        query = TrainedModels.objects.filter(title__icontains=searchID)
+    except:
+        query = TrainedModels.objects.all()
+
+    username = request.session.get('userEmail', 'nothing')
+
+    pages = query.count() / 6
+    a,b = math.modf(pages)
+    if(int(b) == 0):
+        pages = 1
+    else:
+        pages = int(b)
+
+    if username != 'nothing':
+        return render(request, 'Webapp/searchForModels.html', {"username": username, "models": query, "numOfModels": query.count(), "numOfPages": pages})
+    else:
+        return render(request, 'Webapp/searchForModels2.html', {"models": query, "numOfModels": query.count(), "numOfPages": pages})
+
+def models_autocomplete(request):
+    if request.is_ajax():
+        query = request.GET.get("term", "")
+        companies = TrainedModels.objects.filter(title__icontains=query)
+        results = []
+        for company in companies:
+            place_json = company.title
+            results.append(place_json)
+        data = json.dumps(results)
+    mimetype = "application/json"
+    return HttpResponse(data, mimetype)

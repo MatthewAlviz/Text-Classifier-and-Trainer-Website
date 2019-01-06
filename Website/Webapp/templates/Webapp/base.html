@@ -61,7 +61,9 @@
             <div class="col-12 text-center">
                 <button type="button" id="train" class="btn btn-outline-primary btn-lg" data-toggle="modal" data-target="#register">Train a model</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" id="predict" class="btn btn-outline-primary btn-lg active" data-toggle="tooltip" data-placement="top" title="Tip: Train a model first before predicting data!" data-toggle="modal" data-target="#register">Predict data</button>
+                <a href="{%url 'searchModelsPage'%}">
+                    <button type="button" id="predict" class="btn btn-outline-primary btn-lg active" data-toggle="tooltip" data-placement="top" title="Tip: Train a model first before predicting data!" data-toggle="modal" data-target="#register">Predict data</button>
+                </a>
             </div>
         </div>
 
@@ -82,7 +84,9 @@
 
                 <button type="button" id="train" class="btn btn-outline-primary btn-lg" data-toggle="modal" data-target="#register">Train a model</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" id="predict" class="btn btn-outline-primary btn-lg">Check trained models</button>
+                <a href="{%url 'searchModelsPage'%}">
+                    <button type="button" id="predict" class="btn btn-outline-primary btn-lg">Check trained models</button>
+                </a>
             </div>
         </div> <!-- End of row -->
 

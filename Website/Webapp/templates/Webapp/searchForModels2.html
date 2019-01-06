@@ -1,0 +1,419 @@
+{% load static %}
+<!doctype html>
+<html lang="en" style="overflow-x:hidden">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
+
+     <!-- Static CSS -->
+     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/1.1.34/css/materialdesignicons.min.css">
+     <link rel="stylesheet" href="{% static 'css/loading.css'%}">
+
+     <!-- Bootstrap CSS -->
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+      <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+
+      <style>
+      .page {
+          display: none;
+      }
+      .page-active {
+          display: block;
+      }
+      #searchHere:hover{
+          background: #007bff;
+          border:solid thin #007bff;
+          color:white
+      }
+      .ui-autocomplete{
+          position: absolute;
+          z-index: 10
+      }
+      </style>
+  </head>
+  <body>
+      <div class="alert alert-success alert-dismissible fade show" id="RegSuccess" role="alert" style="display:none">
+          <h4 class="alert-heading">Thank you for registering!</h4>
+          <p>We will be reviewing your account for verification purposes. Please check your email for notifications. The account will only be activated once we've verified your account.</p>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      
+      <!-- Modal -->
+      <div id="register" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="alert alert-danger" role="alert" id="RegError1" style="display:none">
+        Error: <span class="alert-link">Invalid Email</span>. Please enter a valid existing email.
+      </div>
+      <div class="alert alert-danger" role="alert" id="RegError2" style="display:none">
+        Error: <span class="alert-link">Invalid Password</span>. Please follow the guidelines for the password inside the tooltip.
+      </div>
+      <div class="alert alert-warning" role="alert" id="CautionError" style="display:none">
+        Error: <span class="alert-link">Email under review</span>. The email you entered is already registered. We are currently reviewing your account please wait for notifications in your email.
+      </div>
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h3>Register</h3>
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              </div>
+              <div class="modal-body">
+                  <div class="loader" id="loader-1A" style="display:none"></div>
+                  <form class="form" role="form" autocomplete="off" id="formLogin" novalidate="" method="POST" action="/register/">
+                      {% csrf_token %}
+                      <div class="form-group">
+                          <label for="uname2">Email</label>
+                          <input type="email" class="form-control form-control-lg" name="uname2" id="uname2" required="">
+                          <div class="invalid-feedback">Oops, remember to input a valid email.</div>
+                      </div>
+                      <div class="form-group">
+                          <label>Password</label>
+                          <input  data-toggle="tooltip" data-placement="right" title="Enter at least 8 characters with a big and small character, a number and a special character (without spaces)" type="password" class="form-control form-control-lg" id="pwd2" required="" autocomplete="new-password">
+                          <div class="invalid-feedback">Enter your password too!</div>
+                      </div>
+                      <div class="form-group py-4">
+                          <button type="submit" class="btn btn-primary btn-lg float-right" id="btnLogin">Register</button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+
+      <div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="alert alert-danger" role="alert" id="LogInError1" style="display:none">
+      Error: <span class="alert-link">Invalid Credential</span>. The email/password you entered is invalid.
+      </div>
+      <div class="alert alert-danger" role="alert" id="LogInError2" style="display:none">
+      Error: <span class="alert-link">Invalid Request</span>.
+      </div>
+      <div class="alert alert-danger" role="alert" id="ForgetError1" style="display:none">
+      Error (Forgot Password): <span class="alert-link">Invalid Email</span>. The email you entered doesn't exist in our database.
+      </div>
+      <div class="alert alert-warning" role="alert" id="ForgetError2" style="display:none">
+      Error (Forgot Password): <span class="alert-link">Limit Exceeded</span>. Please check your email in order to change your password.
+      </div>
+      <div class="alert alert-success" role="alert" id="ForgetSuccess1" style="display:none">
+      Success (Forgot Password): We've sent an email to <span class="alert-link" id="changeToEmail"> User </span>.
+      </div>
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h3>Sign-in</h3>
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              </div>
+              <div class="modal-body">
+                  <div class="loader" id="loader-1B" style="display:none"></div>
+                  <div class="btn-group float-right" id="mainForgot">
+                      <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:#007bff;background-color:white;border:none">
+                          Forgot password?
+                      </button>
+                      <form class="dropdown-menu p-4" id="forgotPassForm" method="POST">
+                          {% csrf_token %}
+                          <div class="form-group">
+                              <label for="forgotPass">Email</label>
+                              <input type="email" class="form-control" id="forgotPass" placeholder="email@example.com">
+                          </div>
+                          <button type="submit" class="btn btn-primary">Change password</button>
+                      </form>
+                  </div>
+                  <form class="form" role="form" autocomplete="off" id="formLogin2" novalidate="" method="POST">
+                      {% csrf_token %}
+                      <div class="form-group">
+                          <label for="uname1">Email</label>
+                          <input type="email" class="form-control form-control-lg" name="uname1" id="uname1" required="">
+                          <div class="invalid-feedback">Oops, remember to input a valid email.</div>
+                      </div>
+                      <div class="form-group">
+                          <label>Password</label>
+                          <input type="password" class="form-control form-control-lg" id="pwd1" required="" autocomplete="new-password">
+                          <div class="invalid-feedback">Enter your password too!</div>
+                      </div>
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="rememberMe">
+                        <label class="custom-control-label" for="rememberMe" style="cursor:pointer">Keep me logged in</label>
+                      </div>
+                      <div class="form-group py-4">
+                          <button type="submit" class="btn btn-primary btn-lg float-right" id="btnLogin">Sign-in</button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+    <input type="hidden" id="Checker" value="{{numOfPages}}">
+    <!-- Above spaces -->
+    <div style="height:4vh; color:transparent; visibility:hidden">SPACE</div>
+    <div class="container">
+        <div class="float-right">
+            <button type="button" id="RegButton" class="btn btn-outline-primary btn-sm" style="border-radius:3.25rem" data-toggle="modal" data-target="#register"><i class="mdi mdi-account-plus"></i> Register</button>&nbsp;&nbsp;
+            <button type="button" id="LogInButton" class="btn btn-outline-primary btn-sm" style="border-radius:3.25rem" data-toggle="modal" data-target="#loginModal"><i class="mdi mdi-login"></i> Sign-in</button>
+        </div>
+    </div>
+    <!-- Above spaces -->
+    <div style="height:12vh; color:transparent; visibility:hidden">SPACE</div>
+    <div class="container">
+
+        <!-- Search form -->
+        <div class="row">
+            <div class="col-4">
+                <form class="form-inline active-cyan-4">
+                    <input class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Search for models" aria-label="Search" style="margin-right:0px !important" id="autocompleteHere">
+                    <i class="mdi mdi-magnify" id="searchHere" style="border:solid thin #495057b3; border-radius:2px; padding:4px; font-size:1.3em"></i>
+                </form>
+                <div class="col-4" id="autoAnchor">
+                    <!-- autocomplete -->
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- Above spaces -->
+        <div style="height:10vh; visibility:hidden">SPACE</div>
+        <div class="container" style="position:relative;z-index:1">
+        <!--Row start-->
+        <div class="page" id="page1">
+            <div class="row">
+            {% for model in models%}
+                <div class="col-4">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{model.title}}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">by: {{model.email.email}}</h6>
+                            <p class="card-text">{{model.description}}</p>
+                            <a href="#" class="card-link">Use Model</a>
+                        </div>
+                    </div>
+                </div>
+                {% if forloop.counter|divisibleby:"3" and forloop.counter0 is not 0%}
+                    <!-- Above spaces -->
+                    <div style="height:5vh; color:transparent; visibility:hidden">SPACE</div>
+                    </div>
+                    <!-- End of row -->
+                    {% if forloop.counter|divisibleby:"6" and forloop.counter0 is not 0%}
+                    </div>
+                    <!-- End of page -->
+                    <!-- Start of page -->
+                    <div class="page" id="page{{forloop.counter}}">
+                    {% endif %}
+
+                    {% if forloop.last %}
+                    {% else %}
+                        <!--Row start-->
+                        <div class="row">
+                    {% endif %}
+
+                {% endif %}
+            {% endfor %}
+
+            {% if numOfModels|divisibleby:"3" %}
+            {% else %}
+                </div>
+                <!-- End of row -->
+            {% endif %}
+
+        <!-- Above spaces -->
+        <div style="height:5vh; color:transparent; visibility:hidden">SPACE</div>
+    </div>
+
+    <div class="container">
+        <div class="mx-auto" style="text-align:center">
+            <nav aria-label="Page navigation example">
+                <ul id="pagination-demo" class="pagination justify-content-center"></ul>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js">
+    </script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script>
+    var my_page
+    $(document).ready(function(){
+        my_page = $('#Checker').val()
+    });
+    $('#pagination-demo').twbsPagination({
+        totalPages: my_page, //change this depending on total query
+        startPage: 1,
+        visiblePages: 5,
+        initiateStartPageClick: true,
+        hideOnlyOnePage: false,
+        href: false,
+        pageVariable: '{{page}}',
+        totalPagesVariable: '{{total_pages}}',
+        page: null,
+        first: 'First',
+        prev: 'Previous',
+        next: 'Next',
+        last: 'Last',
+        loop: false,
+        beforePageClick: null,
+        onPageClick: function (event, page) {
+            $('.page-active').removeClass('page-active');
+            $('#page'+page).addClass('page-active');
+            setTimeout(function ChangeAnomaly(){
+                    $('.page-link').each(function(i, obj) {
+                        //test
+                        var x = $(this).html()
+                        if(x.charAt(2) != ''){
+                            y = x.substring(2)
+                            $(this).html(y)
+                        }
+                    });
+                }, 1);
+        },
+        paginationClass: 'pagination',
+        nextClass: 'page-item next',
+        prevClass: 'page-item prev',
+        lastClass: 'page-item last',
+        firstClass: 'page-item first',
+        pageClass: 'page-item',
+        activeClass: 'active',
+        disabledClass: 'disabled',
+        anchorClass: 'page-link'
+    });
+    </script>
+    <script>
+    $(function() {
+        $("#autocompleteHere").autocomplete({
+            source: "{% url 'models_autocomplete' %}",
+            minLength: 1,
+            appendTo: '#autoAnchor'
+        });
+    });
+    </script>
+    <script>
+        $("#searchHere").click(function(event) {
+            $.ajax({
+                type:'GET',
+                url: '/searchModels/',
+                success: function(data){
+                    location.href = "/searchModels/?search=" + $('#autocompleteHere').val()
+                }
+            });
+        });
+        $("#LogOut").click(function(event) {
+            $.ajax({
+                type:'POST',
+                url: '/logOut/',
+                success: function(data){
+                    location.href = "/"
+                }
+            });
+        });
+    </script>
+    <script>
+    $("#btnLogin").click(function(event) {
+
+        //Fetch form to apply custom Bootstrap validation
+        var form = $("#formLogin")
+        if (form[0].checkValidity() === false) {
+            event.preventDefault()
+            event.stopPropagation()
+        }
+
+        form.addClass('was-validated');
+    });
+    </script>
+    <script>
+        $(document).on('submit', '#formLogin', function(e){
+            e.preventDefault();
+            $('#loader-1A').removeAttr('style')
+            $('#formLogin').attr("style", "display:none")
+            $.ajax({
+                type:'POST',
+                url: '/register/',
+                data:{
+                    emailReg: $('#uname2').val(),
+                    passwordReg: $('#pwd2').val(),
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function(data){
+                    $('#formLogin').removeAttr('style')
+                    $('#loader-1A').attr("style", "display:none")
+                    $('.alert').attr("style", "display:none")
+                    if (data.status == 'email not exist'){
+                        $('#RegError1').removeAttr('style')
+                    }else if(data.status == 'invalid password'){
+                        $('#RegError2').removeAttr('style')
+                    }else if(data.status == 'under review'){
+                        $('#CautionError').removeAttr('style')
+                    }else{
+                        //success
+                        $('#register').modal('toggle')
+                        $('#RegSuccess').removeAttr('style')
+                    }
+                }
+            });
+        });
+    </script>
+    <script>
+    $(document).on('submit', '#formLogin2', function(e){
+        e.preventDefault();
+        $('#loader-1B').removeAttr('style')
+        $('#formLogin2').attr("style", "display:none")
+        $('#mainForgot').attr("style", "display:none")
+        $.ajax({
+            type:'POST',
+            url: '/logIn/',
+            data:{
+                emailLog: $('#uname1').val(),
+                passwordLog: $('#pwd1').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+            },
+            success: function(data){
+                $('#formLogin2').removeAttr('style')
+                $('#mainForgot').removeAttr('style')
+                $('#loader-1B').attr("style", "display:none")
+                $('.alert').attr("style", "display:none")
+                if (data.status == 'invalid credential'){
+                    $('#LogInError1').removeAttr('style')
+                }else if(data.status == 'error request'){
+                    $('#LogInError2').removeAttr('style')
+                }else{
+                    location.href = "/?keep=" + $('#rememberMe').prop('checked')
+                }
+            }
+        });
+    });
+    </script>
+    <script>
+        $(document).on('submit', '#forgotPassForm', function(e){
+            e.preventDefault();
+            $('#loader-1B').removeAttr('style')
+            $('#formLogin2').attr("style", "display:none")
+            $('#mainForgot').attr("style", "display:none")
+            $.ajax({
+                type:'POST',
+                url: '/forgotPass/',
+                data:{
+                    emailForgot: $('#forgotPass').val(),
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function(data){
+                    $('#formLogin2').removeAttr('style')
+                    $('#mainForgot').removeAttr('style')
+                    $('#changeToEmail').html($('#forgotPass').val())
+                    $('#loader-1B').attr("style", "display:none")
+                    $('.alert').attr("style", "display:none")
+                    if (data.status == 'invalid credential'){
+                        $('#ForgetError1').removeAttr('style')
+                    }else if(data.status == 'success'){
+                        $('#ForgetSuccess1').removeAttr('style')
+                    }else if (data.status == 'limit exceeded'){
+                        $('#ForgetError2').removeAttr('style')
+                    }
+                }
+            });
+        });
+    </script>
+
+  </body>
+</html>

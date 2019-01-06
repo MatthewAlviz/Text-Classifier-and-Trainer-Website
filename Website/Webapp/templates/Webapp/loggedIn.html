@@ -68,7 +68,10 @@
             <div class="col-12 text-center">
                 <button type="button" id="train" class="btn btn-outline-primary btn-lg">Train a model</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" id="predict" class="btn btn-outline-primary btn-lg active" data-toggle="tooltip" data-placement="top" title="Tip: Train a model or use other's models before predicting data!">Predict data</button>
+
+                <a href="{%url 'searchModelsPage'%}">
+                    <button type="button" id="predict" class="btn btn-outline-primary btn-lg active" data-toggle="tooltip" data-placement="top" title="Tip: Train a model or use other's models before predicting data!">Predict data</button>
+                </a>
             </div>
         </div>
 
@@ -77,7 +80,8 @@
     </div>
 
     <div class="container" id="second">
-        <div style="width:600px; font-size:1.3em;"><b>Recently Trained Models </b><span id="numModels" style="font-size:0.6em; color:#1861b0" data-toggle="tooltip" data-placement="top" title="Tip: You haven't trained any models yet!">Check my models (0)</span></div>
+        <div style="width:600px; font-size:1.3em;"><b>Recently Trained Models </b>
+            <!--<span id="numModels" style="font-size:0.6em; color:#1861b0" data-toggle="tooltip" data-placement="top" title="Tip: You haven't trained any models yet!">Check my models (0)</span>--></div>
 
 
         <!-- Above spaces -->
@@ -90,7 +94,9 @@
 
                 <button type="button" id="train" class="btn btn-outline-primary btn-lg">Train a model</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="{%url 'searchModelsPage'%}">
                 <button type="button" id="predict" class="btn btn-outline-primary btn-lg">Check trained models</button>
+                </a>
             </div>
         </div> <!-- End of row -->
 

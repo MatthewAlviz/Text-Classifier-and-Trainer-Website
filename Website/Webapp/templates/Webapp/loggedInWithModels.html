@@ -68,7 +68,9 @@
             <div class="col-12 text-center">
                 <button type="button" id="train" class="btn btn-outline-primary btn-lg">Train a model</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" id="predict" class="btn btn-outline-primary btn-lg active" data-toggle="tooltip" data-placement="top" title="Tip: Train a model first before predicting data!">Predict data</button>
+                <a href="{%url 'searchModelsPage'%}">
+                    <button type="button" id="predict" class="btn btn-outline-primary btn-lg active" data-toggle="tooltip" data-placement="top" title="Tip: Train a model first before predicting data!">Predict data</button>
+                </a>
             </div>
         </div>
 
@@ -77,7 +79,8 @@
     </div>
 
     <div class="container" id="second">
-        <div style="width:600px; font-size:1.3em;">Recently Trained Models <span id="numModels" style="font-size:0.6em; color:#1861b0">Check my models ({{ numOfModels }})</span></div>
+        <div style="width:600px; font-size:1.3em;">Recently Trained Models
+            <!--<span id="numModels" style="font-size:0.6em; color:#1861b0">Check my models ({{ numOfModels }})</span>--></div>
 
         <!-- Above spaces -->
         <div style="height:10vh; color:transparent; visibility:hidden">SPACE</div>
@@ -119,7 +122,7 @@
         <div style="height:5vh; color:transparent; visibility:hidden">SPACE</div>
 
         <div class="float-right">
-            <div id="otherModels" style="font-size:0.9em; color:#1861b0">Check other models ></div>
+            <a id="otherModels" href="{%url 'searchModelsPage'%}" style="font-size:0.9em; color:#1861b0">Check other models ></a>
         </div>
 
         <!-- Above spaces -->
