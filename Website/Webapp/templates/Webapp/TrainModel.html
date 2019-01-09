@@ -1,8 +1,9 @@
-<htmL>
+{% load static %}
+<html>
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <style>
-    .wizard {
+.wizard {
 margin: 20px auto;
 background: #fff;
 }
@@ -284,14 +285,14 @@ span.round-tab {
 	                            <div class="col-md-8 col-centered">
 	                                <form method="post" action="#" id="#">
                                         <div class="form-group files">
-                                            <input type="file" class="form-control" multiple="" accept=".csv">
+                                            <input type="file" id="file" class="form-control" multiple="" accept=".csv">
                                         </div>
                                     </form>
 	                            </div>
                             </div>
                         </div>
                         <ul class="list-inline pull-right">
-                            <li><button type="button" class="btn btn-primary next-step">Continue</button></li>
+                            <li><button type="button" id="fileSubmit" class="btn btn-primary next-step">Continue</button></li>
                         </ul>
                     </div>
                     <div class="tab-pane" role="tabpanel" id="step2">
@@ -388,6 +389,27 @@ $(elem).next().find('a[data-toggle="tab"]').click();
 function prevTab(elem) {
 $(elem).prev().find('a[data-toggle="tab"]').click();
 }
+</script>
+<script>
+    $('#fileSubmit')..click(function(e){
+        e.preventDefault();
+        var data = new FormData();
+        $.each($('#file')[0].files, function(i, file) {
+            data.append('file-'+i, file);
+        });
+
+        $.ajax({
+            url: '/csvSubmit/',
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function(data){
+                alert(data);
+            }
+        });
+    });
 </script>
 </body>
 </html>

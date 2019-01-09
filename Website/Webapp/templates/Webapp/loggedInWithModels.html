@@ -66,7 +66,9 @@
         <div style="height:15vh; color:transparent; visibility:hidden">SPACE</div>
         <div class="row">
             <div class="col-12 text-center">
-                <button type="button" id="train" class="btn btn-outline-primary btn-lg">Train a model</button>
+                <a href="{%url 'TrainModelsPage'%}">
+                    <button type="button" id="train" class="btn btn-outline-primary btn-lg">Train a model</button>
+                </a>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a href="{%url 'searchModelsPage'%}">
                     <button type="button" id="predict" class="btn btn-outline-primary btn-lg active" data-toggle="tooltip" data-placement="top" title="Tip: Train a model first before predicting data!">Predict data</button>

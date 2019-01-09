@@ -409,3 +409,6 @@ def models_autocomplete(request):
         data = json.dumps(results)
     mimetype = "application/json"
     return HttpResponse(data, mimetype)
+
+def TrainModelsPage(request):
+    return render(request, 'Webapp/TrainModel.html')

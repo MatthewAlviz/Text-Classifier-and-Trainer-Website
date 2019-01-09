@@ -66,7 +66,9 @@
         <div style="height:15vh; color:transparent; visibility:hidden">SPACE</div>
         <div class="row">
             <div class="col-12 text-center">
-                <button type="button" id="train" class="btn btn-outline-primary btn-lg">Train a model</button>
+                <a href="{% url 'TrainModelsPage' %}">
+                    <button type="button" id="train" class="btn btn-outline-primary btn-lg">Train a model</button>
+                </a>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                 <a href="{%url 'searchModelsPage'%}">
@@ -92,10 +94,12 @@
                 You haven't trained any models yet.
                 Would you like to... <br><br><br>
 
-                <button type="button" id="train" class="btn btn-outline-primary btn-lg">Train a model</button>
+                <a href="{% url 'TrainModelsPage' %}">
+                    <button type="button" id="train" class="btn btn-outline-primary btn-lg">Train a model</button>
+                </a>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a href="{%url 'searchModelsPage'%}">
-                <button type="button" id="predict" class="btn btn-outline-primary btn-lg">Check trained models</button>
+                    <button type="button" id="predict" class="btn btn-outline-primary btn-lg">Check trained models</button>
                 </a>
             </div>
         </div> <!-- End of row -->
