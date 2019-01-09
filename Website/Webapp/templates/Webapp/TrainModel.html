@@ -1,7 +1,12 @@
 {% load static %}
 <html>
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/forMobileDeviceTrain.css'%}">
+    <link rel="stylesheet" href="{% static 'css/loading.css'%}">
     <style>
 .wizard {
 margin: 20px auto;
@@ -152,7 +157,7 @@ span.round-tab {
     outline-offset: -10px;
     -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
     transition: outline-offset .15s ease-in-out, background-color .15s linear;
-    padding: 120px 0px 85px 35%;
+    padding: 120px 0px 85px 35px;
     text-align: center !important;
     margin: 0;
     width: 100% !important;
@@ -233,7 +238,21 @@ span.round-tab {
     </style>
 </head>
 <body>
-<div class="container">
+
+        <div id="mobile" style="min-height:100%; min-height:100vh; align-items:center; background-color:#007bff">
+            <div class="container" id="mobile1" style="background-color:#007bff">
+                <!-- For Mobile -->
+                <div class="row">
+                  <div class="col-12 text-center" style="color:white; font-size:1.5em">
+                    <i class="mdi mdi-alert-circle" style="font-size:2em"></i>
+                  </div>
+                  <div class="col-12 text-center" style="color:white; font-size:1.5em">
+                      This site is not available on mobile
+                  </div>
+                </div>
+            </div>
+        </div>
+<div class="container" id="parent">
 	<div class="row">
 		<section>
         <div class="wizard">
@@ -242,7 +261,7 @@ span.round-tab {
                 <ul class="nav nav-tabs" role="tablist">
 
                     <li role="presentation" class="active">
-                        <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Upload training dataset">
+                        <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Upload training dataset" style="text-align:center">
                             <span class="round-tab">
                                 <i class="glyphicon glyphicon-folder-open"></i>
                             </span>
@@ -250,14 +269,14 @@ span.round-tab {
                     </li>
 
                     <li role="presentation" class="disabled">
-                        <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Configure Training settings">
+                        <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Configure Training settings" style="text-align:center">
                             <span class="round-tab">
                                 <i class="glyphicon glyphicon-pencil"></i>
                             </span>
                         </a>
                     </li>
                     <li role="presentation" class="disabled">
-                        <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Details of Trained Model">
+                        <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Details of Trained Model" style="text-align:center">
                             <span class="round-tab">
                                 <i class="glyphicon glyphicon-list-alt"></i>
                             </span>
@@ -265,7 +284,7 @@ span.round-tab {
                     </li>
 
                     <li role="presentation" class="disabled">
-                        <a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Complete">
+                        <a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Complete" style="text-align:center">
                             <span class="round-tab">
                                 <i class="glyphicon glyphicon-ok"></i>
                             </span>
@@ -276,16 +295,17 @@ span.round-tab {
 
             <form role="form">
                 <div class="tab-content">
-                    <div class="tab-pane active" role="tabpanel" id="step1">
+                    <div class="tab-pane active" role="tabpanel" id="step1" style="text-align:center">
                         <h3>Step 1</h3>
                         <p>Upload a training dataset in .csv form</p>
                         <br><br><br>
                         <div class="container">
 	                        <div class="row">
 	                            <div class="col-md-8 col-centered">
-	                                <form method="post" action="#" id="#">
+	                                <form method="post" action="#" id="#UploadCSV">
+                                        {% csrf_token %}
                                         <div class="form-group files">
-                                            <input type="file" id="file" class="form-control" multiple="" accept=".csv">
+                                            <input type="file" id="uploadFile" class="form-control" multiple="" accept=".csv">
                                         </div>
                                     </form>
 	                            </div>
@@ -295,7 +315,7 @@ span.round-tab {
                             <li><button type="button" id="fileSubmit" class="btn btn-primary next-step">Continue</button></li>
                         </ul>
                     </div>
-                    <div class="tab-pane" role="tabpanel" id="step2">
+                    <div class="tab-pane" role="tabpanel" id="step2" style="text-align:center">
                         <h3>Step 2</h3>
                         <p>Configure settings for training.</p><br><br>
                         <div class='row'>
@@ -318,7 +338,7 @@ span.round-tab {
                             <li><button type="button" class="btn btn-primary next-step">Continue</button></li>
                         </ul>
                     </div>
-                    <div class="tab-pane" role="tabpanel" id="step3">
+                    <div class="tab-pane" role="tabpanel" id="step3" style="text-align:center">
                         <h3>Step 3</h3>
                         <p>Details of your trained model.</p>
                         <ul class="list-inline pull-right">
@@ -327,8 +347,10 @@ span.round-tab {
                         </ul>
                     </div>
                     <div class="tab-pane" role="tabpanel" id="complete">
-                        <h3>Complete</h3>
-                        <p>You have successfully trained your model! Please fill out the details below</p>
+                        <div style="text-align:center">
+                            <h3>Complete</h3>
+                            <p>You have successfully trained your model! Please fill out the details below</p>
+                        </div>
                         <br><br>
                         <label for="exampleInputEmail1">Name of your model</label>
                         <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Model Title" style="width:30%">
@@ -391,16 +413,18 @@ $(elem).prev().find('a[data-toggle="tab"]').click();
 }
 </script>
 <script>
-    $('#fileSubmit')..click(function(e){
+    $('#fileSubmit').click(function(e){
         e.preventDefault();
-        var data = new FormData();
-        $.each($('#file')[0].files, function(i, file) {
-            data.append('file-'+i, file);
-        });
+        var fileData = document.getElementById('uploadFile').files[0]
+        var formData = new FormData()
+        formData.append('UploadedFile', fileData)
+        for (var key of formData.entries()) {
+            console.log(key[0] + ', ' + key[1]);
+        }
 
         $.ajax({
-            url: '/csvSubmit/',
-            data: data,
+            url: '/submitTrainData/',
+            data: formData,
             cache: false,
             contentType: false,
             processData: false,

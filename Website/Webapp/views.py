@@ -412,3 +412,10 @@ def models_autocomplete(request):
 
 def TrainModelsPage(request):
     return render(request, 'Webapp/TrainModel.html')
+
+@csrf_exempt
+def SubmitCSVTrain(request):
+    if request.method == 'POST':
+        form = FileUploadForm(data=request.POST, files=request.FILES)
+        print(type(form))
+        #Create a form model first

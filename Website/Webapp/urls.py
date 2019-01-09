@@ -13,5 +13,6 @@ urlpatterns = [
     url(r'^verifyPass/$', views.verifyPass, name='verifyPass'),
     url(r'^searchModels/$', views.searchModelsPage, name='searchModelsPage'),
     url(r'^autocomplete/$', views.models_autocomplete, name='models_autocomplete'),
-    url(r'^train/$', views.TrainModelsPage, name='TrainModelsPage')
+    url(r'^train/$', views.TrainModelsPage, name='TrainModelsPage'),
+    url(r'^submitTrainData/$', views.SubmitCSVTrain, name='SubmitCSVTrain')
 ]
