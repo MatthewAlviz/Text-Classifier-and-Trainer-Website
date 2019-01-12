@@ -17,6 +17,14 @@ import uuid
 import math
 import json
 
+#MachineLearning libs
+#import library
+from fastText import train_supervised
+import pandas as pd
+import re
+from nltk.corpus import stopwords
+from io import StringIO
+import csv
 homeURL = 'http://0.0.0.0:8000/'
 
 #Home Page
@@ -416,6 +424,60 @@ def TrainModelsPage(request):
 @csrf_exempt
 def SubmitCSVTrain(request):
     if request.method == 'POST':
-        form = FileUploadForm(data=request.POST, files=request.FILES)
-        print(type(form))
-        #Create a form model first
+        try:
+            upload = request.FILES['UploadedFile']
+
+            file_ext = upload.name[-4:]
+
+            if file_ext != '.csv':
+                print ('return error')
+                data={
+                'status' : 'error'
+                }
+            else:
+                #upload file
+                user = request.session['userEmail']
+                user = user.split('@')
+                handle_uploaded_file(upload, user)
+
+                #pre-process file
+                dataset = pd.read_csv(settings.BASE_DIR + '/media/temp/' + user[0] + '.csv')
+                col = ['Knowledge Base', 'Short Description']
+                test1 = dataset[col]
+                test1['Knowledge Base']=['__label__'+s.replace(' or ', '$').replace(', or ','$').replace(',','$').replace(' ','_').replace(',','__label__').replace('$$','$').replace('$',' __label__').replace('___','__') for s in test1['Knowledge Base']]
+                test1['Knowledge Base']
+                test1['Short Description']= test1['Short Description'].replace('\n',' ', regex=True).replace('\t',' ', regex=True)
+
+                REPLACE_BY_SPACE_RE = re.compile('[/(){}\[\]\|@,;]')
+                BAD_SYMBOLS_RE = re.compile('[^0-9a-z #+_]')
+                STOPWORDS = set(stopwords.words('english'))
+
+                def clean_text(text):
+                    text = text.lower() # lowercase text
+                    text = REPLACE_BY_SPACE_RE.sub(' ', text) # replace REPLACE_BY_SPACE_RE symbols by space in text
+                    text = BAD_SYMBOLS_RE.sub('', text) # delete symbols which are in BAD_SYMBOLS_RE from text
+                    text = ' '.join(word for word in text.split() if word not in STOPWORDS) # delete stopwors from text
+
+                    return text
+
+                test1['Short Description'] = test1['Short Description'].apply(clean_text)
+
+                #store pre-processed data
+                test1.to_csv(settings.BASE_DIR + '/media/temp/' + user[0] + 'trainData.txt', index=False, sep=' ', header=False, escapechar=" ", quoting=csv.QUOTE_NONE)
+
+                #finish
+                data={
+                'status' : 'success'
+                }
+
+        except:
+            data = {
+            'status' : 'error'
+            }
+
+    return JsonResponse(data)
+
+def handle_uploaded_file(f, user):
+    with open(settings.BASE_DIR + '/media/temp/' + user[0] + '.csv', 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)

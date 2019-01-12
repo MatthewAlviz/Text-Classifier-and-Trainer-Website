@@ -1,5 +1,7 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 from . import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     url(r'^$', views.base, name='base'),
@@ -15,4 +17,4 @@ urlpatterns = [
     url(r'^autocomplete/$', views.models_autocomplete, name='models_autocomplete'),
     url(r'^train/$', views.TrainModelsPage, name='TrainModelsPage'),
     url(r'^submitTrainData/$', views.SubmitCSVTrain, name='SubmitCSVTrain')
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -232,7 +232,7 @@ span.round-tab {
   width: 25px;
   height: 25px;
   border-radius: 50%;
-  background: #4CAF50;
+  background: blue;
   cursor: pointer;
 }
     </style>
@@ -261,7 +261,7 @@ span.round-tab {
                 <ul class="nav nav-tabs" role="tablist">
 
                     <li role="presentation" class="active">
-                        <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Upload training dataset" style="text-align:center">
+                        <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Upload training dataset" style="text-align:center" title="Hooray!">
                             <span class="round-tab">
                                 <i class="glyphicon glyphicon-folder-open"></i>
                             </span>
@@ -298,7 +298,11 @@ span.round-tab {
                     <div class="tab-pane active" role="tabpanel" id="step1" style="text-align:center">
                         <h3>Step 1</h3>
                         <p>Upload a training dataset in .csv form</p>
-                        <br><br><br>
+                        <br>
+                            <div class="alert alert-danger fade in" id="errorstep1" style="display:none">
+                                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                <strong>Error!</strong> A problem has been occurred while submitting your data. Plase re-upload...
+                            </div><br><br>
                         <div class="container">
 	                        <div class="row">
 	                            <div class="col-md-8 col-centered">
@@ -316,33 +320,47 @@ span.round-tab {
                         </ul>
                     </div>
                     <div class="tab-pane" role="tabpanel" id="step2" style="text-align:center">
-                        <h3>Step 2</h3>
-                        <p>Configure settings for training.</p><br><br>
-                        <div class='row'>
-                            <div class='col-md-6'>
-                                <label for="lr"><h4>Epoch</h4></label>
-                                <div class="slidecontainer">
-                                    <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+                        <div class="loader" id="loader-1A"></div>
+                        <div id="step2Disabled" style="display:none">
+                            <h3>Step 2</h3>
+                            <p>Configure settings for training.</p><br><br>
+                            <div class='row'>
+                                <div class='col-md-6'>
+                                    <label for="lr"><h4>Epoch</h4></label>
+                                    <div class="slidecontainer" data-toggle="tooltip" data-placement="bottom" title="25" id="range1">
+                                        <input type="range" min="0" max="50" value="25" class="slider" id="myRange1">
+                                    </div>
+                                </div>
+                                <div class='col-md-6'>
+                                    <label for="lr"><h4>Learning Rate</h4></label>
+                                    <div class="slidecontainer" data-toggle="tooltip" data-placement="bottom" title="1" id="range2">
+                                        <input type="range" name="lr" min="0" max="1" value="1" step="0.25" class="slider" id="myRange2">
+                                    </div>
                                 </div>
                             </div>
-                            <div class='col-md-6'>
-                                <label for="lr"><h4>Learning Rate</h4></label>
-                                <div class="slidecontainer">
-                                    <input type="range" name="lr" min="1" max="100" value="50" class="slider" id="myRange">
-                                </div>
-                            </div>
+                            <br><br><br><br>
+                            <ul class="list-inline pull-right">
+                                <a href="{%url 'TrainModelsPage'%}">
+                                    <li>
+                                        <a href="{%url 'TrainModelsPage'%}">
+                                            <button type="button" class="btn btn-default prev-step">Go Back</button>
+                                        </a>
+                                    </li>
+                                </a>
+                                <li><button type="button" class="btn btn-primary next-step">Continue</button></li>
+                            </ul>
                         </div>
-                        <br><br><br><br>
-                        <ul class="list-inline pull-right">
-                            <li><button type="button" class="btn btn-default prev-step">Go Back</button></li>
-                            <li><button type="button" class="btn btn-primary next-step">Continue</button></li>
-                        </ul>
                     </div>
                     <div class="tab-pane" role="tabpanel" id="step3" style="text-align:center">
                         <h3>Step 3</h3>
                         <p>Details of your trained model.</p>
                         <ul class="list-inline pull-right">
-                            <li><button type="button" class="btn btn-default prev-step">Go Back</button></li>
+                            <a href="{%url 'TrainModelsPage'%}">
+                                <li>
+                                    <a href="{%url 'TrainModelsPage'%}">
+                                        <button type="button" class="btn btn-default prev-step">Go  Back</button>
+                                    </a>
+                                </li>
                             <li><button type="button" class="btn btn-primary btn-info-full next-step">Continue</button></li>
                         </ul>
                     </div>
@@ -377,9 +395,62 @@ span.round-tab {
 </script>
 <script>
 $(document).ready(function () {
+var DynVal1 = 0
+var DynVal2 = 0
+
+function InitializeThis(){
+    DynVal1 = $('#range1').width() * (25/50)
+    DynVal2 = $('#range2').width()
+}
+
+$('#myRange1').change(function () {
+    //$(this).attr('title', $(this).val()).tooltip('fixTitle').tooltip('show')
+    $('.tooltip-inner').html($(this).val())
+    $('#range1').attr('title', $(this).val())
+    $('#range1').attr('data-original-title', $(this).val())
+    var dynamicVal = $(this).val() / 50
+    dynamicVal = $('#range1').width() * dynamicVal
+    $('.tooltip').attr('style', 'left:' + dynamicVal + 'px')
+    DynVal1 = dynamicVal
+});
+
+$('#range1').hover(function () {
+    //$(this).attr('title', $(this).val()).tooltip('fixTitle').tooltip('show')
+    $('.tooltip-inner').html($(this).attr('title'))
+    setTimeout(
+        function changeThis(){
+            $('.tooltip').attr('style', 'left:' + DynVal1 + 'px')
+    }, 5);
+});
+
+$('#myRange2').change(function () {
+    //$(this).attr('title', $(this).val()).tooltip('fixTitle').tooltip('show')
+    $('.tooltip-inner').html($(this).val())
+    $('#range2').attr('title', $(this).val())
+    $('#range2').attr('data-original-title', $(this).val())
+    var dynamicVal2 = $(this).val() / 1
+    dynamicVal2 = $('#range2').width() * dynamicVal2
+    $('.tooltip').attr('style', 'left:' + dynamicVal2 + 'px')
+    DynVal2 = dynamicVal2
+});
+
+$('#range2').hover(function () {
+    //$(this).attr('title', $(this).val()).tooltip('fixTitle').tooltip('show')
+    $('.tooltip-inner').html($(this).attr('title'))
+    setTimeout(
+        function changeThis(){
+            $('.tooltip').attr('style', 'left:' + DynVal2 + 'px')
+    }, 5);
+});
+
+//reset file
+$('#uploadFile').on('click', function() {
+    $(this).val('');
+});
 //Initialize tooltips
 $('.nav-tabs > li a[title]').tooltip();
 
+$('[data-toggle="tooltip"]').tooltip();
 //Wizard
 $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
 
@@ -399,10 +470,8 @@ $(".next-step").click(function (e) {
 });
 $(".prev-step").click(function (e) {
 
-    var $active = $('.wizard .nav-tabs li.active');
-    prevTab($active);
-
-});
+    //var $active = $('.wizard .nav-tabs li.active');
+    //prevTab($active);
 });
 
 function nextTab(elem) {
@@ -411,16 +480,12 @@ $(elem).next().find('a[data-toggle="tab"]').click();
 function prevTab(elem) {
 $(elem).prev().find('a[data-toggle="tab"]').click();
 }
-</script>
-<script>
+
     $('#fileSubmit').click(function(e){
         e.preventDefault();
         var fileData = document.getElementById('uploadFile').files[0]
         var formData = new FormData()
         formData.append('UploadedFile', fileData)
-        for (var key of formData.entries()) {
-            console.log(key[0] + ', ' + key[1]);
-        }
 
         $.ajax({
             url: '/submitTrainData/',
@@ -430,9 +495,21 @@ $(elem).prev().find('a[data-toggle="tab"]').click();
             processData: false,
             type: 'POST',
             success: function(data){
-                alert(data);
+                console.log(data.status)
+                if(data.status == 'error'){
+                    var $active = $('.wizard .nav-tabs li.active');
+                    prevTab($active);
+                    $('#errorstep1').removeAttr('style')
+
+                }else{
+                    $('#step2Disabled').removeAttr('style')
+                    $('#loader-1A').attr('style', 'display:none')
+                    $('#errorstep1').attr('style', 'display:none')
+                    InitializeThis()
+                }
             }
         });
+    });
     });
 </script>
 </body>
