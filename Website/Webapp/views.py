@@ -16,6 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 import uuid
 import math
 import json
+import random
 
 #MachineLearning libs
 #import library
@@ -438,7 +439,8 @@ def SubmitCSVTrain(request):
                 #upload file
                 user = request.session['userEmail']
                 user = user.split('@')
-                handle_uploaded_file(upload, user)
+                linecount = handle_uploaded_file(upload, user)
+                splitFile = linecount * 0.3
 
                 #pre-process file
                 dataset = pd.read_csv(settings.BASE_DIR + '/media/temp/' + user[0] + '.csv')
@@ -465,7 +467,11 @@ def SubmitCSVTrain(request):
                 #store pre-processed data
                 test1.to_csv(settings.BASE_DIR + '/media/temp/' + user[0] + 'trainData.txt', index=False, sep=' ', header=False, escapechar=" ", quoting=csv.QUOTE_NONE)
 
+                #get Test Data
+                getTestData(splitFile, user[0])
+
                 #finish
+                os.remove(settings.BASE_DIR + '/media/temp/' + user[0] + '.csv')
                 data={
                 'status' : 'success'
                 }
@@ -478,6 +484,36 @@ def SubmitCSVTrain(request):
     return JsonResponse(data)
 
 def handle_uploaded_file(f, user):
+    lineCount = 0
     with open(settings.BASE_DIR + '/media/temp/' + user[0] + '.csv', 'wb+') as destination:
         for chunk in f.chunks():
+            lineCount += 1
             destination.write(chunk)
+
+    return lineCount
+
+def getTestData(fileSplit, user):
+    lines = open(settings.BASE_DIR + '/media/temp/' + user + 'trainData.txt').readlines()
+    random.shuffle(lines)
+    newfile = open(settings.BASE_DIR + '/media/temp/' + user + 'testData.txt', "a")
+
+    for i, line in enumerate(lines):
+        if i > fileSplit:
+            break
+        else:
+            newfile.write(line)
+
+    lines.close()
+    newfile.close()
+
+def trainModel(request):
+    user = request.session['userEmail']
+    user = user.split('@')
+
+    #Train the model
+    model = train_supervised(settings.BASE_DIR + '/media/temp/' + user[0] + 'trainData.txt')
+    model.test(settings.BASE_DIR + '/media/temp/' + user[0] + 'testData.txt')
+    #model.save_model(settings.BASE_DIR + '/media/trained/' + user[0] + '.bin')
+
+    #Compute Accuracy
+    #Fmeasure = 2 * [(precision *recall) / (precision + recall)]
