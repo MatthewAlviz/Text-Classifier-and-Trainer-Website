@@ -347,22 +347,28 @@ span.round-tab {
                                         </a>
                                     </li>
                                 </a>
-                                <li><button type="button" class="btn btn-primary next-step">Continue</button></li>
+                                <li><button type="button" class="btn btn-primary next-step" id="trainSubmit">Continue</button></li>
                             </ul>
                         </div>
                     </div>
                     <div class="tab-pane" role="tabpanel" id="step3" style="text-align:center">
-                        <h3>Step 3</h3>
-                        <p>Details of your trained model.</p>
-                        <ul class="list-inline pull-right">
-                            <a href="{%url 'TrainModelsPage'%}">
-                                <li>
-                                    <a href="{%url 'TrainModelsPage'%}">
-                                        <button type="button" class="btn btn-default prev-step">Go  Back</button>
-                                    </a>
-                                </li>
-                            <li><button type="button" class="btn btn-primary btn-info-full next-step">Continue</button></li>
-                        </ul>
+                        <div class="loader" id="loader-1B"></div>
+                        <div id="step3Disabled" style="display:none">
+                            <h3>Step 3</h3>
+                            <p>Details of your trained model.</p>
+                            <br><br>
+                            <h3>Accuracy: <span id="accuracyScore">0.00%</span></h3>
+                            <br><br>
+                            <ul class="list-inline">
+                                <a href="{%url 'TrainModelsPage'%}">
+                                    <li>
+                                        <a href="{%url 'TrainModelsPage'%}">
+                                            <button type="button" id="retrain" class="btn btn-default prev-step">Re-train</button>
+                                        </a>
+                                    </li>
+                                <li><button type="button" id="complete2" class="btn btn-primary btn-info-full next-step">Continue</button></li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="tab-pane" role="tabpanel" id="complete">
                         <div style="text-align:center">
@@ -370,11 +376,14 @@ span.round-tab {
                             <p>You have successfully trained your model! Please fill out the details below</p>
                         </div>
                         <br><br>
-                        <label for="exampleInputEmail1">Name of your model</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Model Title" style="width:30%">
-                        <br>
-                        <label for="exampleInputEmail1">Description</label>
-                        <textarea class="form-control" rows="3" style="width:50%"></textarea><br><br>
+                        <form style="margin-left:10%" id="completeTraining">
+                            <label for="exampleInputEmail1">Name of your model</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Model Title" style="width:30%">
+                            <br>
+                            <label for="exampleInputEmail1">Description</label>
+                            <textarea class="form-control" rows="3" style="width:50%"></textarea>
+                        </form>
+                            <br><br>
                         <ul class="list-inline pull-right">
                             <button type="submit" class="btn btn-primary btn-info-full next-step">Submit</button></li>
                         </ul>
@@ -510,6 +519,70 @@ $(elem).prev().find('a[data-toggle="tab"]').click();
             }
         });
     });
+
+    $("#trainSubmit").click(function(e){
+        e.preventDefault();
+        $.ajax({
+            type:'POST',
+            url: '/startTrain/',
+            data:{
+                epochValue: $('#myRange1').val(),
+                learningRateValue: $('#myRange2').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+            },
+            success: function(data){
+                    $('#step3Disabled').removeAttr('style')
+                    $('#loader-1B').attr('style', 'display:none')
+                    if(data.status > 60){
+                        $('#accuracyScore').attr('style', 'color:green')
+
+                        $('#complete2').attr('style', 'background-color:#337ab7; color:#fff; border-color: #2e6da4')
+
+                        $('#retrain').attr('style', 'background-color:#e6e6e6; color:#333; border-color: #adadad')
+                    }else{
+                        $('#accuracyScore').attr('style', 'color:red')
+
+                        $('#retrain').attr('style', 'background-color:#337ab7; color:#fff; border-color: #2e6da4')
+
+                        $('#complete2').attr('style', 'background-color:#e6e6e6; color:#333; border-color: #adadad')
+                    }
+
+                    $('#accuracyScore').html(data.status)
+            }
+        });
+    });
+
+    $(document).on('submit', '#completeTraining', function(e){
+        e.preventDefault();
+        $('#loader-1A').removeAttr('style')
+        $('#formLogin').attr("style", "display:none")
+        $.ajax({
+            type:'POST',
+            url: '/register/',
+            data:{
+                emailReg: $('#uname2').val(),
+                passwordReg: $('#pwd2').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+            },
+            success: function(data){
+                $('#formLogin').removeAttr('style')
+                $('#loader-1A').attr("style", "display:none")
+                $('.alert').attr("style", "display:none")
+                if (data.status == 'email not exist'){
+                    $('#RegError1').removeAttr('style')
+                }else if(data.status == 'invalid password'){
+                    $('#RegError2').removeAttr('style')
+                }else if(data.status == 'under review'){
+                    $('#CautionError').removeAttr('style')
+                }else{
+                    //success
+                    $('#register').modal('toggle')
+                    $('#RegSuccess').removeAttr('style')
+                }
+            }
+        });
+    });
+
     });
 </script>
 </body>

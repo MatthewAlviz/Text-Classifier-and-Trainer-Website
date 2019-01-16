@@ -16,5 +16,6 @@ urlpatterns = [
     url(r'^searchModels/$', views.searchModelsPage, name='searchModelsPage'),
     url(r'^autocomplete/$', views.models_autocomplete, name='models_autocomplete'),
     url(r'^train/$', views.TrainModelsPage, name='TrainModelsPage'),
-    url(r'^submitTrainData/$', views.SubmitCSVTrain, name='SubmitCSVTrain')
+    url(r'^submitTrainData/$', views.SubmitCSVTrain, name='SubmitCSVTrain'),
+    url(r'^startTrain/$', views.trainModel, name='trainModel')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
