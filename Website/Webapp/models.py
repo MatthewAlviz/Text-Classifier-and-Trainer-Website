@@ -10,8 +10,8 @@ class UserInfo(models.Model):
 class TrainedModels(models.Model):
     email = models.ForeignKey('UserInfo', on_delete=models.CASCADE)
     filePath = models.CharField(max_length=100)
-    title = models.CharField(max_length=50)
-    description = models.CharField(max_length=200)
+    modelTitle = models.CharField(max_length=50)
+    modelDescription = models.CharField(max_length=200)
     dateCreated = models.DateTimeField(auto_now=True)
 
 class RegistrationQueue(models.Model):

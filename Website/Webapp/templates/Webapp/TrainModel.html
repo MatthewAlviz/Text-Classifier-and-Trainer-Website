@@ -376,16 +376,30 @@ span.round-tab {
                             <p>You have successfully trained your model! Please fill out the details below</p>
                         </div>
                         <br><br>
-                        <form style="margin-left:10%" id="completeTraining">
+                        <div class="alert alert-danger fade in" id="errorTitle" style="display:none">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                            <strong>Error!</strong> Please enter a valid model title. Minimum of 5 characters
+                        </div>
+                        <div class="alert alert-danger fade in" id="errorTitle2" style="display:none">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                            <strong>Error!</strong> The model title already exists.
+                        </div>
+                        <div class="alert alert-danger fade in" id="errorDesc" style="display:none">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                            <strong>Error!</strong> Please enter a valid description. Minimum of 12 characters.
+                        </div>
+                        <br>
+                        <form style="margin-left:10%" id="completeTraining" method="POST" action="/completeTrain/">
+                            {% csrf_token %}
                             <label for="exampleInputEmail1">Name of your model</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Model Title" style="width:30%">
+                            <input type="text" class="form-control" id="ModelName" placeholder="Model Title" style="width:30%">
                             <br>
                             <label for="exampleInputEmail1">Description</label>
-                            <textarea class="form-control" rows="3" style="width:50%"></textarea>
+                            <textarea class="form-control" rows="3" style="width:50%" id="ModelDesc"></textarea>
                         </form>
                             <br><br>
                         <ul class="list-inline pull-right">
-                            <button type="submit" class="btn btn-primary btn-info-full next-step">Submit</button></li>
+                            <button type="button" id="submitThis" class="btn btn-primary btn-info-full next-step">Submit</button></li>
                         </ul>
                     </div>
                     <div class="clearfix"></div>
@@ -552,38 +566,35 @@ $(elem).prev().find('a[data-toggle="tab"]').click();
         });
     });
 
-    $(document).on('submit', '#completeTraining', function(e){
-        e.preventDefault();
-        $('#loader-1A').removeAttr('style')
-        $('#formLogin').attr("style", "display:none")
-        $.ajax({
-            type:'POST',
-            url: '/register/',
-            data:{
-                emailReg: $('#uname2').val(),
-                passwordReg: $('#pwd2').val(),
-                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
-            },
-            success: function(data){
-                $('#formLogin').removeAttr('style')
-                $('#loader-1A').attr("style", "display:none")
-                $('.alert').attr("style", "display:none")
-                if (data.status == 'email not exist'){
-                    $('#RegError1').removeAttr('style')
-                }else if(data.status == 'invalid password'){
-                    $('#RegError2').removeAttr('style')
-                }else if(data.status == 'under review'){
-                    $('#CautionError').removeAttr('style')
-                }else{
-                    //success
-                    $('#register').modal('toggle')
-                    $('#RegSuccess').removeAttr('style')
-                }
-            }
-        });
-    });
 
-    });
+        $('#submitThis').click(function(e){
+            e.preventDefault();
+            $('#errorstep1').attr('style', 'display:none')
+            $('#errorstep1').attr('style', 'display:none')
+            $('#errorstep1').attr('style', 'display:none')
+            $.ajax({
+                type:'POST',
+                url: '/completeTrain/',
+                data:{
+                    modelName: $('#ModelName').val(),
+                    modelDesc: $('#ModelDesc').val(),
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function(data){
+                    if (data.status == 'enter valid model title'){
+                        $('#errorTitle').removeAttr('style')
+                    }else if (data.status == 'title change'){
+                        $('#errorTitle2').removeAttr('style')
+                    }else if (data.status == 'enter valid description'){
+                        $('#errorDesc').removeAttr('style')
+                    }else{
+                        //success
+                        location.href = '/'
+                    }
+                }
+            });
+        });
+});
 </script>
 </body>
 </html>

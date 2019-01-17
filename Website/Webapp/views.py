@@ -47,6 +47,7 @@ def base(request):
         username = request.session['userEmail']
 
         if TrainedModels.objects.filter(email=username).exists():
+            
             query = TrainedModels.objects.filter(email=username)
             count = query.count()
 
@@ -205,7 +206,12 @@ def keepLoggedIn(request):
             response.set_cookie('email', myUserEmail)
 
             return response
+        else:
+            data = {
+            'status' : 'false'
+            }
 
+            return JsonResponse(data)
 @csrf_exempt
 #Log-out
 def logOut(request):
@@ -521,18 +527,63 @@ def trainModel(request):
         precision = float(result[1])
         recall = float(result[2])
 
-        print(precision)
-        print(recall)
         #Compute Accuracy
         Fmeasure = 2 * ((precision *recall) / (precision + recall))
         Fmeasure = "{:.2%}".format(Fmeasure)
         #print('accuracy%')
         #print(Fmeasure)
+
         #Save model
-        #model.save_model(settings.BASE_DIR + '/media/trained/' + user[0] + '.bin')
+        model.save_model(settings.BASE_DIR + '/media/temp/' + user[0] + 'trainedModel.bin')
 
         data = {
         'status' : Fmeasure
         }
 
+    return JsonResponse(data)
+
+def completeModel(request):
+    if request.method == 'POST':
+        user = request.session['userEmail']
+        ModelName = request.POST['modelName']
+        ModelDesc = request.POST['modelDesc']
+
+        if UserInfo.objects.filter(email=user).exists():
+            if ModelName.isspace() == False and len(ModelName)>=4:
+                if ModelDesc.isspace() == False and len(ModelDesc)>=12:
+                    if TrainedModels.objects.filter(modelTitle=ModelName).exists():
+                        data = {
+                        'status' : 'title change'
+                        }
+                    else:
+                        #save model to trainedModel
+                        user = user.split("@")
+                        path = settings.BASE_DIR + '/media/temp/' + user[0] + 'trainedModel.bin'
+                        model = fastText.load_model(path)
+
+                        path = settings.BASE_DIR + '/media/trained/' + ModelName + '.bin'
+                        model.save_model(path)
+
+                        os.remove(settings.BASE_DIR + '/media/temp/' + user[0] + 'trainedModel.bin')
+
+                        #success, store to db
+                        query = UserInfo.objects.get(email=request.session['userEmail'])
+
+                        TrainedModels.objects.create(email=query, filePath=path, modelTitle=ModelName, modelDescription=ModelDesc)
+
+                        data = {
+                        'status' : 'success'
+                        }
+                else:
+                    data = {
+                    'status' : 'enter valid description'
+                    }
+            else:
+                data = {
+                'status' : 'enter valid model title'
+                }
+        else:
+            data = {
+            'status' : 'user not valid'
+            }
     return JsonResponse(data)

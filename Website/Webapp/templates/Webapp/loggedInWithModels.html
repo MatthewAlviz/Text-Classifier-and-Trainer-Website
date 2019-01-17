@@ -93,9 +93,9 @@
             <div class="col-4">
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
-                        <h5 class="card-title">{{model.title}}</h5>
+                        <h5 class="card-title">{{model.modelTitle}}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">by: {{model.email.email}}</h6>
-                        <p class="card-text">{{model.description}}</p>
+                        <p class="card-text">{{model.modelDescription}}</p>
                         <a href="#" class="card-link">Use Model</a>
                     </div>
                 </div>
@@ -190,6 +190,9 @@
                             keepLogged: $('#keepLoggedIn').val(),
                             myUserEmail: $('#myEmail').val(),
                             csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+                        },
+                        success: function(data) {
+                            console.log(data.status)
                         }
                     });
             }, 900);
