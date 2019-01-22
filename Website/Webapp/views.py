@@ -47,7 +47,7 @@ def base(request):
         username = request.session['userEmail']
 
         if TrainedModels.objects.filter(email=username).exists():
-            
+
             query = TrainedModels.objects.filter(email=username)
             count = query.count()
 
@@ -396,7 +396,7 @@ def confirmAccount(request):
 def searchModelsPage(request):
     try:
         searchID = request.GET['search']
-        query = TrainedModels.objects.filter(title__icontains=searchID)
+        query = TrainedModels.objects.filter(modelTitle__icontains=searchID)
     except:
         query = TrainedModels.objects.all()
 
@@ -417,10 +417,10 @@ def searchModelsPage(request):
 def models_autocomplete(request):
     if request.is_ajax():
         query = request.GET.get("term", "")
-        companies = TrainedModels.objects.filter(title__icontains=query)
+        companies = TrainedModels.objects.filter(modelTitle__icontains=query)
         results = []
         for company in companies:
-            place_json = company.title
+            place_json = company.modelTitle
             results.append(place_json)
         data = json.dumps(results)
     mimetype = "application/json"
@@ -586,4 +586,79 @@ def completeModel(request):
             data = {
             'status' : 'user not valid'
             }
+    return JsonResponse(data)
+
+def predictUsingModel(request):
+    try:
+        modelName = request.GET['model']
+        return render(request, 'Webapp/UseModel.html')
+    except:
+        return render(request, 'Webapp/404NotFound.html')
+
+@csrf_exempt
+def SubmitCSVPredict(request):
+    if request.method == 'POST':
+        try:
+            upload = request.FILES['UploadedFile']
+            modelName = request.POST['ModelName']
+            file_ext = upload.name[-4:]
+
+            if file_ext != '.csv':
+                print ('return error')
+                data={
+                'status' : 'error'
+                }
+            else:
+                #upload file
+                user = request.session['userEmail']
+                user = user.split('@')
+                handle_uploaded_file(upload, user)
+
+                #pre-process file
+                dataset = pd.read_csv(settings.BASE_DIR + '/media/temp/' + user[0] + '.csv')
+                col = ['Short Description']
+                test1 = dataset[col]
+                test1['Short Description']= test1['Short Description'].replace('\n',' ', regex=True).replace('\t',' ', regex=True)
+
+                REPLACE_BY_SPACE_RE = re.compile('[/(){}\[\]\|@,;]')
+                BAD_SYMBOLS_RE = re.compile('[^0-9a-z #+_]')
+                STOPWORDS = set(stopwords.words('english'))
+
+                def clean_text(text):
+                    text = text.lower() # lowercase text
+                    text = REPLACE_BY_SPACE_RE.sub(' ', text) # replace REPLACE_BY_SPACE_RE symbols by space in text
+                    text = BAD_SYMBOLS_RE.sub('', text) # delete symbols which are in BAD_SYMBOLS_RE from text
+                    text = ' '.join(word for word in text.split() if word not in STOPWORDS) # delete stopwors from text
+
+                    return text
+
+                test1['Short Description'] = test1['Short Description'].apply(clean_text)
+
+                #store pre-processed data
+                test1.to_csv(settings.BASE_DIR + '/media/temp/' + user[0] + 'predictData.txt', index=False, sep=' ', header=False, escapechar=" ", quoting=csv.QUOTE_NONE)
+
+                #predict data
+                path = settings.BASE_DIR + '/media/trained/' + modelName + '.bin'
+                model = fastText.load_model(path)
+                predictData = []
+
+                f = open(settings.BASE_DIR + '/media/temp/' + user[0] + 'predictData.txt', "r")
+                for x in f:
+                    y = x.replace('\n', '')
+                    predictData.append(y)
+
+                x = model.predict(predictData)
+
+                print(x)
+
+                data={
+                'status' : 'success'
+                }
+
+        except Exception as e:
+            print(str(e))
+            data = {
+            'status' : 'error'
+            }
+
     return JsonResponse(data)

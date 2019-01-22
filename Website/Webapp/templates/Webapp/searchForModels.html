@@ -81,7 +81,7 @@
                             <h5 class="card-title">{{model.modelTitle}}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">by: {{model.email.email}}</h6>
                             <p class="card-text">{{model.modelDescription}}</p>
-                            <a href="#" class="card-link">Use Model</a>
+                            <a href="{%url 'predictUsingModel'%}?model={{model.modelTitle}}" class="card-link">Use Model</a>
                         </div>
                     </div>
                 </div>

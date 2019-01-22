@@ -1,0 +1,10 @@
+/home/matthew/Desktop/Accenture/Tool-Classifier-Website/Website/Webapp/fastText-master/CMakeFiles/install.dir
+/home/matthew/Desktop/Accenture/Tool-Classifier-Website/Website/Webapp/fastText-master/CMakeFiles/list_install_components.dir
+/home/matthew/Desktop/Accenture/Tool-Classifier-Website/Website/Webapp/fastText-master/CMakeFiles/rebuild_cache.dir
+/home/matthew/Desktop/Accenture/Tool-Classifier-Website/Website/Webapp/fastText-master/CMakeFiles/install/local.dir
+/home/matthew/Desktop/Accenture/Tool-Classifier-Website/Website/Webapp/fastText-master/CMakeFiles/install/strip.dir
+/home/matthew/Desktop/Accenture/Tool-Classifier-Website/Website/Webapp/fastText-master/CMakeFiles/edit_cache.dir
+/home/matthew/Desktop/Accenture/Tool-Classifier-Website/Website/Webapp/fastText-master/CMakeFiles/fasttext-shared.dir
+/home/matthew/Desktop/Accenture/Tool-Classifier-Website/Website/Webapp/fastText-master/CMakeFiles/fasttext-static_pic.dir
+/home/matthew/Desktop/Accenture/Tool-Classifier-Website/Website/Webapp/fastText-master/CMakeFiles/fasttext-static.dir
+/home/matthew/Desktop/Accenture/Tool-Classifier-Website/Website/Webapp/fastText-master/CMakeFiles/fasttext-bin.dir
