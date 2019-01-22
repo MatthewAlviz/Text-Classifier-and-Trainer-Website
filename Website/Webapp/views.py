@@ -618,6 +618,7 @@ def SubmitCSVPredict(request):
                 dataset = pd.read_csv(settings.BASE_DIR + '/media/temp/' + user[0] + '.csv')
                 col = ['Short Description']
                 test1 = dataset[col]
+                originalInput = test1['Short Description']
                 test1['Short Description']= test1['Short Description'].replace('\n',' ', regex=True).replace('\t',' ', regex=True)
 
                 REPLACE_BY_SPACE_RE = re.compile('[/(){}\[\]\|@,;]')
@@ -632,7 +633,7 @@ def SubmitCSVPredict(request):
 
                     return text
 
-                test1['Short Description'] = test1['Short Description'].apply(clean_text)
+                #test1['Short Description'] = test1['Short Description'].apply(clean_text)
 
                 #store pre-processed data
                 test1.to_csv(settings.BASE_DIR + '/media/temp/' + user[0] + 'predictData.txt', index=False, sep=' ', header=False, escapechar=" ", quoting=csv.QUOTE_NONE)
@@ -648,11 +649,29 @@ def SubmitCSVPredict(request):
                     predictData.append(y)
 
                 x = model.predict(predictData)
+                prediction = x[0]
+                probability = x[1].tolist()
 
-                print(x)
+                #write csv file of results
+                with open(settings.BASE_DIR + '/media/temp/' + user[0] + 'predictResult.csv', mode='w') as result_file:
+                    result_writer = csv.writer(result_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
+                    result_writer.writerow(['Description', 'Prediction', 'Probability'])
+
+                    for i, description in enumerate(originalInput):
+                        x = prediction[i][0]
+                        tempStr = re.findall('(?<=label__).*$', x)
+                        tempProba = "{:.2%}".format(float(probability[i][0]))
+
+                        result_writer.writerow([description, tempStr[0], tempProba])
+
+                descriptionJSON = originalInput.tolist()
+                
                 data={
-                'status' : 'success'
+                'status' : 'success',
+                'description' : descriptionJSON,
+                'prediction' : prediction,
+                'probability' : probability
                 }
 
         except Exception as e:

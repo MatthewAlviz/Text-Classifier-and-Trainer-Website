@@ -389,6 +389,11 @@ $(elem).prev().find('a[data-toggle="tab"]').click();
                     $('#step2Disabled').removeAttr('style')
                     $('#loader-1A').attr('style', 'display:none')
                     $('#errorstep1').attr('style', 'display:none')
+                    console.log(data.description[0])
+                    //clean data
+                    console.log(data.prediction[0][0])
+                    //transform to percentage
+                    console.log(data.probability[0][0])
                 }
             }
         });
