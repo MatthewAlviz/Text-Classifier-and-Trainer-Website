@@ -7,7 +7,17 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'css/forMobileDeviceTrain.css'%}">
     <link rel="stylesheet" href="{% static 'css/loading.css'%}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
     <style>
+#example_previous{
+    margin:5px !important; cursor: pointer
+}
+#example_next{
+    margin:5px !important; cursor: pointer
+}
+.paginate_button{
+    margin:5px !important; cursor: pointer
+}
 .wizard {
 margin: 20px auto;
 background: #fff;
@@ -312,10 +322,30 @@ span.round-tab {
                             <h3>Complete</h3>
                             <p>Here's the result of the predicted data.</p>
                         </div>
-                        <br>
-                        <ul class="list-inline pull-right">
-                            <button type="button" id="submitThis" class="btn btn-primary btn-info-full next-step">Download Result</button></li>
+
+                        <ul class="list-inline" style="text-align:center">
+                            <li>
+                                <form id="myForm" action="/downloadResult/" method="GET">
+                                </form>
+                                <!--<a href="{%url 'downloadHere'%}" target="_blank">-->
+                                    <button type="button" id="submitThis" class="btn btn-primary btn-info-full next-step">Download Result </button>
+                                <!--</a>-->
+                            </li>
                         </ul>
+                        <br>
+                        <br>
+                        <table id="example" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Label</th>
+                                    <th>Accuracy</th>
+                                </tr>
+                            </thead>
+                            <tbody id="insertData">
+                            </tbody>
+                        </table>
+                        <br>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -326,6 +356,8 @@ span.round-tab {
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/dataTables.bootstrap.min.js"></script>
 <script>
 $(document).ready(function () {
 
@@ -386,31 +418,22 @@ $(elem).prev().find('a[data-toggle="tab"]').click();
                     $('#errorstep1').removeAttr('style')
 
                 }else{
+                    $('#errorstep1').attr('style', 'display:none')
+                    for(var i = 0; i<data.size; i++){
+
+                        $('#insertData').append("<tr><td>" + data.description[i] + "</td><td>" + data.prediction[i] + "</td><td>" + data.probability[i] + "</td></tr>")
+                    }
+                    $('#example').DataTable()
                     $('#step2Disabled').removeAttr('style')
                     $('#loader-1A').attr('style', 'display:none')
-                    $('#errorstep1').attr('style', 'display:none')
-                    console.log(data.description[0])
-                    //clean data
-                    console.log(data.prediction[0][0])
-                    //transform to percentage
-                    console.log(data.probability[0][0])
                 }
             }
         });
     });
 
         $('#submitThis').click(function(e){
-            e.preventDefault();
-            $.ajax({
-                type:'POST',
-                url: '/downloadResult/',
-                data:{
-                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
-                },
-                success: function(data){
-
-                }
-            });
+            var form = document.getElementById('myForm');
+            form.submit();
         });
 });
 </script>

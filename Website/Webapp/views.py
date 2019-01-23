@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.conf import settings
 from django.contrib import messages
 from django.core.mail import send_mail
+import django.utils.encoding as utils
 import re
 from .models import UserInfo
 from .models import RegistrationQueue
@@ -652,6 +653,9 @@ def SubmitCSVPredict(request):
                 prediction = x[0]
                 probability = x[1].tolist()
 
+                convPred = []
+                convProb = []
+
                 #write csv file of results
                 with open(settings.BASE_DIR + '/media/temp/' + user[0] + 'predictResult.csv', mode='w') as result_file:
                     result_writer = csv.writer(result_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -663,15 +667,18 @@ def SubmitCSVPredict(request):
                         tempStr = re.findall('(?<=label__).*$', x)
                         tempProba = "{:.2%}".format(float(probability[i][0]))
 
+                        convPred.append(tempStr)
+                        convProb.append(tempProba)
                         result_writer.writerow([description, tempStr[0], tempProba])
 
                 descriptionJSON = originalInput.tolist()
-                
+
                 data={
                 'status' : 'success',
                 'description' : descriptionJSON,
-                'prediction' : prediction,
-                'probability' : probability
+                'prediction' : convPred,
+                'probability' : convProb,
+                'size' : len(descriptionJSON)
                 }
 
         except Exception as e:
@@ -681,3 +688,19 @@ def SubmitCSVPredict(request):
             }
 
     return JsonResponse(data)
+
+def downloadHere(request):
+    return render(request, 'Webapp/downloadResult.html')
+
+@csrf_exempt
+def extractResult(request):
+    if request.method == 'GET':
+        user = request.session['userEmail']
+        user = user.split('@')
+        #modelName = request.POST['modelName']
+        file_path = settings.BASE_DIR + '/media/temp/' + user[0] + 'predictResult.csv'
+        if os.path.exists(file_path):
+            with open(file_path, 'rb') as fh:
+                response = HttpResponse(fh.read(), content_type="text/csv")
+                response['Content-Disposition'] = 'attachment; filename=Result.csv'
+        return response
