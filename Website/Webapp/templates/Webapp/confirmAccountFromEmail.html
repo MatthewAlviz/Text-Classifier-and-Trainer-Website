@@ -3,7 +3,7 @@
     <b>{{ emailUser }}</b> is requesting for an account. Do you?
     <br>
     <br>
-    <form action="http://0.0.0.0:8000/confirm/" method="post">
+    <form action="http://192.168.1.4:8000/confirm/" method="post">
         <input type="hidden" name="myemail" value="{{ emailAdmin }}">
         <input type="hidden" name="choice" value="accept">
         <input style="background-color:#4CAF50; color:white; cursor:pointer" type="submit" value="Accept">
@@ -12,7 +12,7 @@
 
     &nbsp;&nbsp;&nbsp;&nbsp;
 
-    <form action="http://0.0.0.0:8000/confirm/" method="post">
+    <form action="http://192.168.1.4:8000/confirm/" method="post">
         <input type="hidden" name="myemail" value="{{ emailAdmin }}">
         <input type="hidden" name="choice" value="decline">
         <input style="background-color:#f44336; color:white; cursor:pointer" type="submit" value="Decline">

@@ -28,7 +28,7 @@ import re
 from nltk.corpus import stopwords
 from io import StringIO
 import csv
-homeURL = 'http://0.0.0.0:8000/'
+homeURL = 'http://192.168.1.4:8000/'
 
 #Home Page
 def base(request):
@@ -488,6 +488,7 @@ def SubmitCSVTrain(request):
                 }
 
         except Exception as e:
+            print(str(e))
             data = {
             'status' : 'error'
             }
@@ -704,3 +705,21 @@ def extractResult(request):
                 response = HttpResponse(fh.read(), content_type="text/csv")
                 response['Content-Disposition'] = 'attachment; filename=Result.csv'
         return response
+
+@csrf_exempt
+def deleteModel(request):
+    if request.method == 'POST':
+        modelName = request.POST['modelName']
+        user = request.session['userEmail']
+
+        #delete model file
+        os.remove(settings.BASE_DIR + '/media/trained/' + modelName+ '.bin')
+
+        #remove database
+        deleteThis = TrainedModels.objects.get(modelTitle=modelName)
+        deleteThis.delete()
+        data={
+        'status' : 'success'
+        }
+
+        return JsonResponse(data)

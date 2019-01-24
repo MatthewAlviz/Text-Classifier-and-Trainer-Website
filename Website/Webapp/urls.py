@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^useModel/$', views.predictUsingModel, name='predictUsingModel'),
     url(r'^submitPredictData/$', views.SubmitCSVPredict, name='SubmitCSVPredict'),
     url(r'^downloadHere/$', views.downloadHere, name='downloadHere'),
-    url(r'^downloadResult/$', views.extractResult, name='extractResult')
+    url(r'^downloadResult/$', views.extractResult, name='extractResult'),
+    url(r'^deleteModel/$', views.deleteModel, name='deleteModel')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

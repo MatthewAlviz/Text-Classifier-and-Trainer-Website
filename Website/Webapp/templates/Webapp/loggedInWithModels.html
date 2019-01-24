@@ -81,8 +81,8 @@
     </div>
 
     <div class="container" id="second">
-        <div style="width:600px; font-size:1.3em;">Recently Trained Models
-            <!--<span id="numModels" style="font-size:0.6em; color:#1861b0">Check my models ({{ numOfModels }})</span>--></div>
+        <div style="width:600px; font-size:1.3em;"><b>Recently Trained Models</b>
+            <span id="numModels" style="font-size:0.6em; color:#1861b0">Check my models ({{ numOfModels }})</span></div>
 
         <!-- Above spaces -->
         <div style="height:10vh; color:transparent; visibility:hidden">SPACE</div>
@@ -93,10 +93,11 @@
             <div class="col-4">
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
+                        <i class="mdi mdi-close-circle-outline hoverDelete" style="font-size:2em; color:red; float:right; cursor:pointer" data-toggle="tooltip" data-placement="top" title="Delete this model?" model="{{model.modelTitle}}"></i>
                         <h5 class="card-title">{{model.modelTitle}}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">by: {{model.email.email}}</h6>
                         <p class="card-text">{{model.modelDescription}}</p>
-                        <a href="#" class="card-link">Use Model</a>
+                        <a href="{%url 'predictUsingModel'%}?model={{model.modelTitle}}" class="card-link">Use Model</a>
                     </div>
                 </div>
             </div>
@@ -175,6 +176,16 @@
                 $(this).removeClass('active')
             }
             );
+
+            $('.hoverDelete').hover(function(inFunction){
+                $(this).removeClass("mdi-close-circle-outline")
+                $(this).addClass("mdi-close-circle")
+            },
+            function(outFunction){
+                $(this).removeClass("mdi-close-circle")
+                $(this).addClass("mdi-close-circle-outline")
+            }
+            );
         })
 
     </script>
@@ -203,6 +214,19 @@
             $.ajax({
                 type:'POST',
                 url: '/logOut/',
+                success: function(data){
+                    location.href = "/"
+                }
+            });
+        });
+
+        $(".hoverDelete").click(function(event) {
+            $.ajax({
+                type:'POST',
+                url: '/deleteModel/',
+                data:{
+                    modelName: $(this).attr('model')
+                },
                 success: function(data){
                     location.href = "/"
                 }
